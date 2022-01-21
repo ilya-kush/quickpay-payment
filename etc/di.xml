@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *  di
+ *
+ * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
+ * @author    Ilya Kushnir ilya.kush@gmail.com
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Sales\Model\Order\StateResolver">
+        <plugin sortOrder="9999" name="resolver_payment_review" type="HW\QuickPay\Plugin\Sales\Model\Order\StateResolver"/>
+    </type>
+
+    <type name="HW\QuickPay\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayGatewayGeneralConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Configuration readers -->
+    <virtualType name="QuickPayGatewayGeneralConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Configuration readers -->
+
+    <!-- Logger, initialized with QuickPayGatewayGeneralConfig -->
+    <virtualType name="QuickPayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayGatewayGeneralConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Start Payment Method Facade configuration -->
+    <virtualType name="QuickPayGatewayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayGatewayValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayGatewayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayGatewayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayGatewayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayGatewayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayGatewayGeneralConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayGatewayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayGatewayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayGatewayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayGatewayGeneralConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Payment Method Facade configuration -->
+
+    <!-- Start MobilePay Method Facade configuration -->
+    <virtualType name="QuickPayMobilePayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_MOBILEPAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayMobilePayValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayMobilePayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayMobilePayConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_MOBILEPAY</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayMobilePayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayMobilePayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayMobilePayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayMobilePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayMobilePayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayMobilePayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayMobilePayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayMobilePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End MobilePay Method Facade configuration -->
+
+    <!-- Start Klarna Method Facade configuration -->
+    <virtualType name="QuickPayKlarnaFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_KLARNA</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayKlarnaValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayKlarnaValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayKlarnaConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_KLARNA</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayKlarnaValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayKlarnaCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayKlarnaCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayKlarnaConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayKlarnaValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayKlarnaConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayKlarnaConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayKlarnaConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Klarna Method Facade configuration -->
+
+    <!-- Start Swish Method Facade configuration -->
+    <virtualType name="QuickPaySwishFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_SWISH</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPaySwishValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPaySwishValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPaySwishConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_SWISH</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPaySwishValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPaySwishCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPaySwishCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPaySwishConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPaySwishValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPaySwishConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPaySwishConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPaySwishConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Swish Method Facade configuration -->
+
+    <!-- Start Anyday Method Facade configuration -->
+    <virtualType name="QuickPayAnydayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_ANYDAY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayAnydayValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayAnydayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayAnydayConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_ANYDAY</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayAnydayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayAnydayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayAnydayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayAnydayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayAnydayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayAnydayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayAnydayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayAnydayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Anyday Method Facade configuration -->
+
+    <!-- Start Trustly Method Facade configuration -->
+    <virtualType name="QuickPayTrustlyFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_TRUSTLY</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayTrustlyValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayTrustlyValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayTrustlyConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_TRUSTLY</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayTrustlyValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayTrustlyCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayTrustlyCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayTrustlyConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayTrustlyValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayTrustlyConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayTrustlyConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayTrustlyConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Trustly Method Facade configuration -->
+
+    <!-- Start ViaBill Method Facade configuration -->
+    <virtualType name="QuickPayViaBillFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIABILL</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayViaBillValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayViaBillValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayViaBillConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIABILL</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayViaBillValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayViaBillCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayViaBillCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayViaBillConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayViaBillValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayViaBillConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayViaBillConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayViaBillConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End ViaBill Method Facade configuration -->
+
+    <!-- Start Vipps Method Facade configuration -->
+    <virtualType name="QuickPayVippsFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIPPS</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">HW\QuickPay\Block\Info</argument>
+            <argument name="validatorPool" xsi:type="object">QuickPayVippsValidatorPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">QuickPayVippsValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">QuickPayGatewayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Configuration reader -->
+    <virtualType name="QuickPayVippsConfig" type="HW\QuickPay\Gateway\Config\General">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIPPS</argument>
+        </arguments>
+    </virtualType>
+    <!-- Validators infrastructure -->
+    <virtualType name="QuickPayVippsValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">QuickPayVippsCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayVippsCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">QuickPayVippsConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- Value handlers infrastructure -->
+    <virtualType name="QuickPayVippsValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">QuickPayVippsConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QuickPayVippsConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">QuickPayVippsConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- End Vipps Method Facade configuration -->
+
+
+    <!-- Commands infrastructure -->
+    <virtualType name="QuickPayGatewayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">QuickPayGatewayInitializeCommand</item>
+                <item name="authorize" xsi:type="string">QuickPayGatewayAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">QuickPayGatewayCaptureCommand</item>
+                <item name="sale" xsi:type="string">QuickPayGatewayAutoCaptureCommand</item>
+                <item name="refund" xsi:type="string">QuickPayGatewayRefundCommand</item>
+                <item name="cancel" xsi:type="string">QuickPayGatewayCancelCommand</item>
+                <item name="void" xsi:type="string">QuickPayGatewayCancelCommand</item>
+                <item name="fetch_transaction_information" xsi:type="string">QuickPayGatewayFetchInfoCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="HW\QuickPay\Gateway\Request\AbstractRequest">
+        <arguments>
+            <argument name="logger" xsi:type="object">QuickPayLogger</argument>
+        </arguments>
+    </type>
+    <type name="HW\QuickPay\Gateway\Http\Client\AbstractClient">
+        <arguments>
+            <argument name="logger" xsi:type="object">QuickPayLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- __________________ -->
+    <!-- Initialize command -->
+    <virtualType name="QuickPayGatewayInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayInitializeRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Initialization</argument>
+            <argument name="validator" xsi:type="object">QuickPayInitializeValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayInitializeResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Initialization Request -->
+    <virtualType name="QuickPayGatewayInitializeRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment" xsi:type="string">HW\QuickPay\Gateway\Request\Initialization</item>
+                <item name="payment_link" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentLink</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Initialization Validator -->
+    <virtualType name="QuickPayInitializeValidators" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
+                <item name="initialize" xsi:type="string">HW\QuickPay\Gateway\Validator\InitializationValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Initialization Response handlers -->
+    <virtualType name="QuickPayGatewayInitializeResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="txnid" xsi:type="string">HW\QuickPay\Gateway\Response\GatewayTransId</item>
+                <item name="payment_link" xsi:type="string">HW\QuickPay\Gateway\Response\PaymentLinkHandler</item>
+                <item name="order_state" xsi:type="string">HW\QuickPay\Gateway\Response\Initialize\OrderState</item>
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- _________________   -->
+    <!-- Authorize command -->
+    <virtualType name="QuickPayGatewayAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayAuthorizeRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Get</argument>
+            <argument name="validator" xsi:type="object">QuickPayAuthorizeValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayAuthorizeResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Authorization Request -->
+    <virtualType name="QuickPayGatewayAuthorizeRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment_id" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentId</item>
+                <item name="amount" xsi:type="string">HW\QuickPay\Gateway\Request\Amount</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Authorization Validator -->
+    <virtualType name="QuickPayAuthorizeValidators" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
+                <item name="authorize" xsi:type="string">HW\QuickPay\Gateway\Validator\AuthorizeValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Authorization Response handlers -->
+    <virtualType name="QuickPayGatewayAuthorizeResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+                <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
+                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Authorize\TransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- _______________ -->
+    <!-- Capture command -->
+    <virtualType name="QuickPayGatewayCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayCaptureRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Capture</argument>
+            <argument name="validator" xsi:type="object">QuickPayCaptureValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayCaptureResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!--Auto Capture command   -->
+    <virtualType name="QuickPayGatewayAutoCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayCaptureRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Get</argument>
+            <argument name="validator" xsi:type="object">QuickPayCaptureValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayAutoCaptureResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Capture Request -->
+    <virtualType name="QuickPayGatewayCaptureRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment_id" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentId</item>
+                <item name="synchronized" xsi:type="string">HW\QuickPay\Gateway\Request\Synchronized</item>
+                <item name="amount" xsi:type="string">HW\QuickPay\Gateway\Request\Amount</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Capture Validator -->
+    <virtualType name="QuickPayCaptureValidators" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
+                <!--<item name="capture" xsi:type="string">HW\QuickPay\Gateway\Validator\CaptureValidator</item>-->
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Capture Response handlers -->
+    <virtualType name="QuickPayGatewayCaptureResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+                <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
+                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Autocapture Response handlers -->
+    <virtualType name="QuickPayGatewayAutoCaptureResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+                <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
+                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- _______________-->
+    <!-- Refund command -->
+    <virtualType name="QuickPayGatewayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayRefundRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Refund</argument>
+            <argument name="validator" xsi:type="object">QuickPayRefundValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayRefundResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Refund Request -->
+    <virtualType name="QuickPayGatewayRefundRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment_id" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentId</item>
+                <item name="synchronized" xsi:type="string">HW\QuickPay\Gateway\Request\Synchronized</item>
+                <item name="amount" xsi:type="string">HW\QuickPay\Gateway\Request\Amount</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Refund Validator -->
+    <virtualType name="QuickPayRefundValidators" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
+                <!--<item name="refund" xsi:type="string">HW\QuickPay\Gateway\Validator\RefundValidator</item>-->
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Refund Response handlers -->
+    <virtualType name="QuickPayGatewayRefundResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+                <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Refund\TransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- _______________-->
+    <!-- Cancel command -->
+    <virtualType name="QuickPayGatewayCancelCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayCancelRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Cancel</argument>
+            <argument name="validator" xsi:type="object">QuickPayCancelValidators</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayCancelResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Cancel Request -->
+    <virtualType name="QuickPayGatewayCancelRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment_id" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentId</item>
+                <item name="synchronized" xsi:type="string">HW\QuickPay\Gateway\Request\Synchronized</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Cancel Validator -->
+    <virtualType name="QuickPayCancelValidators" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
+                <!--<item name="cancel" xsi:type="string">HW\QuickPay\Gateway\Validator\CancelValidator</item>-->
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Cancel Response handlers -->
+    <virtualType name="QuickPayGatewayCancelResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
+                <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Cancel\TransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- ___________________-->
+    <!-- Fetch info command -->
+    <!-- Attention! We use our own gateway command and handler composite    -->
+    <virtualType name="QuickPayGatewayFetchInfoCommand" type="HW\QuickPay\Gateway\Command\FetchTransactionInformation">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">QuickPayGatewayFetchInfoRequestBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Get</argument>
+            <argument name="validator" xsi:type="object">HW\QuickPay\Gateway\Validator\Response</argument>
+            <argument name="handler" xsi:type="object">QuickPayGatewayFetchInfoResponseHandlerComposite</argument>
+            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+    <!-- Fetch info Request -->
+    <virtualType name="QuickPayGatewayFetchInfoRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
+                <item name="payment_id" xsi:type="string">HW\QuickPay\Gateway\Request\PaymentId</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Fetch info Response handlers -->
+    <!-- Attention! We use our own handler composite    -->
+    <virtualType name="QuickPayGatewayFetchInfoResponseHandlerComposite" type="HW\QuickPay\Gateway\Response\HandlerChain\FetchTransactionInformation">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\UpdateTransactionAdditionalInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

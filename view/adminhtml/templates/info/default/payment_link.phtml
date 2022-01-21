@@ -1,0 +1,25 @@
+<?php
+/**
+ *  payment_link
+ *
+ * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
+ * @author    Ilya Kushnir ilya.kush@gmail.com
+ * Date:    10.10.2021
+ * Time:    20:14
+ */
+/**
+ * @var \Magento\Backend\Block\Template            $block
+ * @var \Magento\Framework\View\TemplateEngine\Php $this
+ * @var \Magento\Framework\Escaper                 $escaper
+ */
+?>
+<?php if($block->getPaymentLink()): ?>
+    <table class="data-table admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?= __('Payment Link') ?></th>
+            <td><a target="_blank" href="<?= $block->getPaymentLink() ?>" title="<?= __('Go to payment page') ?>"><?= __('Go to payment page') ?></a></td>
+        </tr>
+        </tbody>
+    </table>
+<?php endif; ?>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *  config
+ *
+ * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
+ * @author    Ilya Kushnir ilya.kush@gmail.com
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+        <payment>
+            <quickpay_gateway>
+                <active>0</active>
+                <model>QuickPayGatewayFacade</model>
+                <group>quickpay_group</group>
+                <!--<payment_methods></payment_methods>-->
+                <title>Credit Card (via QuickPay)</title>
+<!--                <order_status>pending</order_status>-->
+                <min_order_total />
+                <max_order_total />
+                <sort_order>20</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+
+                <!-- only gateway payment -->
+                <cardlogos>dankort,visa,visaelectron,mastercard,maestro</cardlogos>
+                <!--<payment_method_specified></payment_method_specified>-->
+
+                <!-- commons configs  -->
+                <debug>0</debug>
+                <testmode>0</testmode>
+                <apikey backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <private_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+<!--                <order_place_redirect_url></order_place_redirect_url>-->
+                <send_order_email>0</send_order_email>
+                <autocapture>0</autocapture>
+                <send_invoice_email>1</send_invoice_email>
+                <timeout_to_cancel>7200</timeout_to_cancel>
+                <debugReplaceKeys>apikey,private_key</debugReplaceKeys>
+                <paymentInfoKeys>Type,Phone number,Nin number,Nin country,Nin gender,Card Type,Card Number,Card Owner,Card Expiration Date,Currency,Mode,Capture mode,Autofee,Transaction fee,Fraud,Fraud report</paymentInfoKeys>
+                <privateInfoKeys></privateInfoKeys>
+            </quickpay_gateway>
+            <quickpay_mobilepay>
+                <active>0</active>
+                <model>QuickPayMobilePayFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>mobilepay</payment_methods>
+                <title>MobilePay (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>30</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_mobilepay>
+            <quickpay_klarna>
+                <active>0</active>
+                <model>QuickPayKlarnaFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>klarna-payments</payment_methods>
+                <title>Klarna (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>40</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_klarna>
+            <quickpay_swish>
+                <active>0</active>
+                <model>QuickPaySwishFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>swish</payment_methods>
+                <title>Swish (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>50</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_swish>
+            <quickpay_anyday>
+                <active>0</active>
+                <model>QuickPayAnydayFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>anyday-split</payment_methods>
+                <synchronized_method>1</synchronized_method>
+                <title>Anyday (via QuickPay)</title>
+                <min_order_total>300</min_order_total>
+                <max_order_total />
+                <sort_order>60</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_anyday>
+            <quickpay_trustly>
+                <active>0</active>
+                <model>QuickPayTrustlyFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>trustly</payment_methods>
+                <title>Trustly (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>70</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_trustly>
+            <quickpay_viabill>
+                <active>0</active>
+                <model>QuickPayViaBillFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>viabill</payment_methods>
+                <title>ViaBill (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>80</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_viabill>
+            <quickpay_vipps>
+                <active>0</active>
+                <model>QuickPayVippsFacade</model>
+                <group>quickpay_group</group>
+                <payment_methods>vipps</payment_methods>
+                <title>Vipps (via QuickPay)</title>
+                <min_order_total />
+                <max_order_total />
+                <sort_order>90</sort_order>
+                <payment_action>initialize</payment_action>
+                <!--<currency>DKK</currency>-->
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_cancel>1</can_cancel>
+                <can_sale>1</can_sale>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <is_gateway>1</is_gateway>
+            </quickpay_vipps>
+        </payment>
+	</default>
+</config>

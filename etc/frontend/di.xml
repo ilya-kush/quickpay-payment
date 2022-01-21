@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *  di
+ *
+ * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
+ * @author    Ilya Kushnir ilya.kush@gmail.com
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Checkout config   -->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="quickpay_group" xsi:type="object">HW\QuickPay\Model\Ui\Checkout\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Callback controller -->
+    <type name="HW\QuickPay\Controller\Payment\Callback">
+        <arguments>
+            <argument name="logger" xsi:type="object">QuickPayLogger</argument>
+        </arguments>
+    </type>
+</config>

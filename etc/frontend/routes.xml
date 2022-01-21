@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *
+ *
+ * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
+ * @author    Ilya Kushnir ilya.kush@gmail.com
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="quickpay" frontName="quickpay">
+            <module name="HW_QuickPay"/>
+        </route>
+        <!-- support payment made on old version of module -->
+        <route id="quickpaygateway" frontName="quickpaygateway">
+            <module name="HW_QuickPay"/>
+        </route>
+    </router>
+</config>

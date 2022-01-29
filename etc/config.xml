@@ -13,11 +13,11 @@
         <payment>
             <quickpay_gateway>
                 <active>0</active>
-                <model>QuickPayGatewayFacade</model>
+                <model>QuickPayCreditCardFacade</model>
                 <group>quickpay_group</group>
                 <!--<payment_methods></payment_methods>-->
                 <title>Credit Card (via QuickPay)</title>
-<!--                <order_status>pending</order_status>-->
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>20</sort_order>
@@ -62,6 +62,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>mobilepay</payment_methods>
                 <title>MobilePay (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>30</sort_order>
@@ -88,6 +89,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>klarna-payments</payment_methods>
                 <title>Klarna (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>40</sort_order>
@@ -114,6 +116,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>swish</payment_methods>
                 <title>Swish (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>50</sort_order>
@@ -141,6 +144,7 @@
                 <payment_methods>anyday-split</payment_methods>
                 <synchronized_method>1</synchronized_method>
                 <title>Anyday (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total>300</min_order_total>
                 <max_order_total />
                 <sort_order>60</sort_order>
@@ -167,6 +171,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>trustly</payment_methods>
                 <title>Trustly (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>70</sort_order>
@@ -193,6 +198,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>viabill</payment_methods>
                 <title>ViaBill (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>80</sort_order>
@@ -219,6 +225,7 @@
                 <group>quickpay_group</group>
                 <payment_methods>vipps</payment_methods>
                 <title>Vipps (via QuickPay)</title>
+                <order_status>pending</order_status>
                 <min_order_total />
                 <max_order_total />
                 <sort_order>90</sort_order>

@@ -8,14 +8,43 @@
  * Time:    20:55
  */
 namespace HW\QuickPay\Gateway\Request;
+use HW\QuickPay\Gateway\Helper\AmountConverter;
+use HW\QuickPay\Helper\Data;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Payment\Gateway\Data\Order\OrderAdapter;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
+use Magento\Payment\Model\Method\Logger;
+use Magento\Store\Api\StoreManagementInterface;
+use Magento\Store\Model\StoreManagerInterface;
+
 /**
  *
  */
 class PaymentLink extends AbstractRequest {
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
 
-	/**
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param SerializerInterface   $serializer
+     * @param Data                  $helper
+     * @param AmountConverter       $amountConverter
+     * @param Logger                $logger
+     */
+    public function __construct(
+        StoreManagerInterface $storeManager,
+        SerializerInterface $serializer,
+        Data $helper,
+        AmountConverter $amountConverter,
+        Logger $logger
+    ) {
+        parent::__construct($serializer, $helper, $amountConverter, $logger);
+        $this->_storeManager    = $storeManager;
+    }
+
+    /**
 	 * @inheritDoc
 	 */
 	public function build(array $buildSubject) {
@@ -33,12 +62,13 @@ class PaymentLink extends AbstractRequest {
         $order   = $paymentDO->getOrder();
         $payment = $paymentDO->getPayment();
         $storeId = $order->getStoreId();
+        $storeCode = $this->_storeManager->getStore($storeId)->getCode();
         $billingAddress = $order->getBillingAddress();
         $parametersPaymentLink = [
             "amount"          => $this->_amountConverter->convert($order->getGrandTotalAmount()),
-            "continue_url"    => $this->_helper->getContinueUrl(['order' => $order->getOrderIncrementId()]),
-            "cancel_url"      => $this->_helper->getCancelUrl(['order' => $order->getOrderIncrementId()]),
-            "callback_url"    => $this->_helper->getCallbackUrl(),
+            "continue_url"    => $this->_helper->getContinueUrl(['order' => $order->getOrderIncrementId()],$storeCode),
+            "cancel_url"      => $this->_helper->getCancelUrl(['order' => $order->getOrderIncrementId()],$storeCode),
+            "callback_url"    => $this->_helper->getCallbackUrl([],$storeCode),
             "customer_email"  => $billingAddress->getEmail(),
             "auto_capture"    => $this->_helper->isAutoCaptureMode($storeId),
             "payment_methods" => $this->_helper->getAllowedMethodsOfGateway($storeId,$payment->getMethod()), /** todo: manage it depends on Acquirer */

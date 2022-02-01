@@ -77,29 +77,41 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper {
     }
 
     /**
-     * @param array $params
+     * @param array  $params
+     * @param string $storeCode
      *
      * @return string
      */
-    public function getCallbackUrl($params = []){
+    public function getCallbackUrl($params = [], $storeCode = ''){
+        if($storeCode){
+            return sprintf("%s?___store=%s", $this->_getUrl(self::CALLBACK_CONTROLLER_PATH,$params), $storeCode);
+        }
         return $this->_getUrl(self::CALLBACK_CONTROLLER_PATH,$params);
     }
 
     /**
-     * @param array $params
+     * @param array  $params
+     * @param string $storeCode
      *
      * @return string
      */
-    public function getCancelUrl($params = []){
+    public function getCancelUrl($params = [], $storeCode = ''){
+        if($storeCode){
+            return sprintf("%s?___store=%s", $this->_getUrl(self::CANCEL_CONTROLLER_PATH,$params), $storeCode);
+        }
         return $this->_getUrl(self::CANCEL_CONTROLLER_PATH,$params);
     }
 
     /**
-     * @param array $params
+     * @param array  $params
+     * @param string $storeCode
      *
      * @return string
      */
-    public function getContinueUrl($params = []){
+    public function getContinueUrl($params = [], $storeCode = ''){
+        if($storeCode){
+            return sprintf("%s?___store=%s", $this->_getUrl(self::RETURNS_CONTROLLER_PATH,$params), $storeCode);
+        }
         return $this->_getUrl(self::RETURNS_CONTROLLER_PATH,$params);
     }
 

@@ -180,7 +180,7 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface {
             $storeId = $this->_order->getStoreId();
 
             if($this->_order->isCanceled()) {
-                $this->_order->addCommentToStatusHistory($this->_prepareComment($responsePayment->getId(),__('Cannot process payment. Order is canceled.')));
+                $payment->addTransactionCommentsToOrder($responsePayment->getId(),__('Cannot process payment. Order is canceled.'));
                 try {
                     $payment->void(new DataObject());
                 } catch (\Exception $exception ){
@@ -207,7 +207,7 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface {
                                 $this->_notifierInvoice->notify($this->_order, $invoice);
                             }
                         } else {
-                            $this->_order->addCommentToStatusHistory($this->_prepareComment($responsePayment->getId(),__('Order has been already invoiced.')));
+                            $payment->addTransactionCommentsToOrder($responsePayment->getId(),__('Order has been already invoiced.'));
                         }
                     } else {
                         $this->_authorizeOperation->authorize($payment,true,$baseTotalDue);
@@ -215,19 +215,20 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface {
                         $payment->setAmountAuthorized($totalDue);
 
                         if($this->_existCaptureOperation($responsePayment)){
-                            $this->_order->addCommentToStatusHistory($this->_prepareComment($responsePayment->getId(),__('There was an unsuccess autocapture operation.')));
+                            $payment->addTransactionCommentsToOrder($responsePayment->getId(),__('There was an unsuccess autocapture operation.'));
                         }
                     }
 
                     if (!$this->_order->getEmailSent()) {
                         $this->_orderSender->send($this->_order);
-                        $this->_order->addCommentToStatusHistory(__('The order confirmation email was sent'));
+                        $payment->addTransactionCommentsToOrder($responsePayment->getId(),__('The order confirmation email was sent'));
                     }
                 } catch (\Exception $exception ){
                     $this->_logger->debug(['Callback Exception' => $exception->getMessage()]);
                 }
-            } else {
-                $this->_order->addCommentToStatusHistory( $this->_prepareComment($responsePayment->getId(),__('Cannot process payment. Order has been already processed.')));
+            }
+            else {
+                $payment->addTransactionCommentsToOrder($responsePayment->getId(),__('Cannot process payment. Order has been already processed.'));
             }
             $this->_orderRepository->save($this->_order);
         }
@@ -306,6 +307,7 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface {
     }
 
     /**
+     * @deprecated since 3.1.0
      * @param string $paymentId
      * @param string $message
      *

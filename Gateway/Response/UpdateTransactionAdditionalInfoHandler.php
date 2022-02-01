@@ -60,8 +60,25 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
                     /** @var $payment OrderPayment */
                     $payment = $paymentDO->getPayment();
 
-                    $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
+                    if(!$this->_operationHelper->isStatusCodeApproved($operation)){
+                        $payment->setIsTransactionPending(true);
+                        $payment->setIsTransactionApproved(false);
+                        $payment->addTransactionCommentsToOrder($handlingSubject['transactionId'],__($operation->getQpStatusMsg()));
+                    } else {
+                        $order = $payment->getOrder();
+                        if($order->isPaymentReview()){
+                            /** here we make sure other handlers not sent pending  */
+                            if(!$payment->getIsTransactionPending() != true){
+                                $payment->setIsTransactionPending(false);
+                            }
+                            /** here we make sure other handlers not rejected approving  */
+                            if($payment->getIsTransactionApproved() != false){
+                                $payment->setIsTransactionApproved(true);
+                            }
+                        }
+                    }
 
+                    $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
                     return $payment->getTransactionAdditionalInfo()[PaymentTransactionModel::RAW_DETAILS]??void;
                 }
             }

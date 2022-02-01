@@ -19,6 +19,7 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
  *
  */
 abstract class AbstractHandler implements HandlerInterface {
+
     /**
      * @var SerializerInterface
      */

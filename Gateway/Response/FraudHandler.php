@@ -33,19 +33,30 @@ class FraudHandler extends AbstractHandler{
             $payment = $paymentDO->getPayment();
 
             /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */
-            if ($responsePayment->getMetadata()->getFraudSuspected() && 0){
+            if ($responsePayment->getMetadata()->getFraudSuspected()){
 
                 $payment->setIsTransactionPending(true);
                 $payment->setIsFraudDetected(true);
+                $payment->setIsTransactionApproved(false);
                 $payment->setAdditionalInformation('Fraud',$responsePayment->getMetadata()->getFraudReportDescription());
                 $payment->setAdditionalInformation('Fraud report',implode(',',$responsePayment->getMetadata()->getFraudRemarks()));
             } else {
                 $order = $payment->getOrder();
                 if($order->isPaymentReview()){
-                    $payment->setIsTransactionPending(false);
-                    $payment->setIsTransactionApproved(true);
+                    /** here we make sure other handlers not sent pending  */
+                    if($payment->getIsTransactionPending() != true){
+                        $payment->setIsTransactionPending(false);
+                    }
+                    /** here we make sure other handlers not rejected approving  */
+                    if($payment->getIsTransactionApproved() != false){
+                        $payment->setIsTransactionApproved(true);
+                    }
                     if ($order->isFraudDetected()) {
-                        $payment->setIsFraudDetected(false);
+                        /** here we make sure other handlers not detected fraud  */
+                        if ($payment->getIsFraudDetected() != true) {
+                            $payment->setIsFraudDetected(false);
+                        }
+
                         if ($responsePayment->getMetadata()->getFraudReportDescription()) {
                             $payment->setAdditionalInformation('Fraud',$responsePayment->getMetadata()->getFraudReportDescription());
                         }

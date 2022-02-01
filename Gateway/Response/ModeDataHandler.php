@@ -32,6 +32,10 @@ class ModeDataHandler extends AbstractHandler {
         /** @var $payment OrderPayment */
         $payment = $paymentDO->getPayment();
 
+        if($responsePayment->getTestMode()){
+            $payment->setAdditionalInformation('Mode', 'Sandbox transaction!');
+        }
+
         if($responsePayment->getFee() > 0){
             $payment->setAdditionalInformation('Transaction fee', $responsePayment->getFee());
         }

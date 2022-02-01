@@ -29,8 +29,7 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
             foreach ($responsePayment->getOperations() as $operation){
                 /** Process authorization operation */
                 if(($this->_operationHelper->isOperationAuthorize($operation) || $this->_operationHelper->isOperationRecurring($operation))
-                    && $this->_operationHelper->checkOperationAmount($operation,$amount)
-                    && $this->_operationHelper->isStatusCodeApproved($operation))
+                    && $this->_operationHelper->checkOperationAmount($operation,$amount))
                 {
                     /** @var PaymentDataObjectInterface $paymentDO */
                     $paymentDO = $handlingSubject['payment'];
@@ -42,6 +41,24 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
 
                     $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
                     $this->_addPaymentAdditionalData($payment,ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE,null);
+
+                    if(!$this->_operationHelper->isStatusCodeApproved($operation)){
+                        $payment->setIsTransactionPending(true);
+                        $payment->setIsTransactionApproved(false);
+                        $payment->addTransactionCommentsToOrder($payment->getTransactionId(),__($operation->getQpStatusMsg()));
+                    } else {
+                        $order = $payment->getOrder();
+                        if($order->isPaymentReview()){
+                            /** here we make sure other handlers not sent pending  */
+                            if(!$payment->getIsTransactionPending() != true){
+                                $payment->setIsTransactionPending(false);
+                            }
+                            /** here we make sure other handlers not rejected approving  */
+                            if($payment->getIsTransactionApproved() != false){
+                                $payment->setIsTransactionApproved(true);
+                            }
+                        }
+                    }
                 }
             }
         }

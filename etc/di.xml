@@ -527,9 +527,10 @@
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
-                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
-                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+<!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
+<!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
                 <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Authorize\TransactionAdditionalInfoHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -573,7 +574,7 @@
         <arguments>
             <argument name="validators" xsi:type="array">
                 <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
-                <!--<item name="capture" xsi:type="string">HW\QuickPay\Gateway\Validator\CaptureValidator</item>-->
+                <item name="capture" xsi:type="string">HW\QuickPay\Gateway\Validator\CaptureValidator</item>
             </argument>
         </arguments>
     </virtualType>
@@ -583,9 +584,10 @@
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
-                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
-                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+<!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
+<!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
                 <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -595,9 +597,10 @@
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
-                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
-                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+<!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
+<!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
                 <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -630,7 +633,7 @@
         <arguments>
             <argument name="validators" xsi:type="array">
                 <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
-                <!--<item name="refund" xsi:type="string">HW\QuickPay\Gateway\Validator\RefundValidator</item>-->
+                <item name="refund" xsi:type="string">HW\QuickPay\Gateway\Validator\RefundValidator</item>
             </argument>
         </arguments>
     </virtualType>
@@ -672,7 +675,7 @@
         <arguments>
             <argument name="validators" xsi:type="array">
                 <item name="errors" xsi:type="string">HW\QuickPay\Gateway\Validator\Response</item>
-                <!--<item name="cancel" xsi:type="string">HW\QuickPay\Gateway\Validator\CancelValidator</item>-->
+                <item name="cancel" xsi:type="string">HW\QuickPay\Gateway\Validator\CancelValidator</item>
             </argument>
         </arguments>
     </virtualType>
@@ -714,9 +717,11 @@
     <virtualType name="QuickPayCreditCardFetchInfoResponseHandlerComposite" type="HW\QuickPay\Gateway\Response\HandlerChain\FetchTransactionInformation">
         <arguments>
             <argument name="handlers" xsi:type="array">
-                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>
-                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
+<!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */ -->
+<!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
+
                 <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\UpdateTransactionAdditionalInfoHandler</item>
+                <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>

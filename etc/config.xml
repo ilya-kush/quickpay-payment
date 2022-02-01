@@ -16,6 +16,7 @@
                 <model>QuickPayCreditCardFacade</model>
                 <group>quickpay_group</group>
                 <!--<payment_methods></payment_methods>-->
+                <synchronized_method>1</synchronized_method>
                 <title>Credit Card (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -61,6 +62,7 @@
                 <model>QuickPayMobilePayFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>mobilepay</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>MobilePay (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -88,6 +90,7 @@
                 <model>QuickPayKlarnaFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>klarna-payments</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>Klarna (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -115,6 +118,7 @@
                 <model>QuickPaySwishFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>swish</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>Swish (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -170,6 +174,7 @@
                 <model>QuickPayTrustlyFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>trustly</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>Trustly (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -197,6 +202,7 @@
                 <model>QuickPayViaBillFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>viabill</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>ViaBill (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />
@@ -224,6 +230,7 @@
                 <model>QuickPayVippsFacade</model>
                 <group>quickpay_group</group>
                 <payment_methods>vipps</payment_methods>
+                <synchronized_method>1</synchronized_method>
                 <title>Vipps (via QuickPay)</title>
                 <order_status>pending</order_status>
                 <min_order_total />

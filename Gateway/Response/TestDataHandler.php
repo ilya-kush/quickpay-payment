@@ -52,22 +52,31 @@ class TestDataHandler extends AbstractHandler {
             /** @var $payment OrderPayment */
             $payment = $paymentDO->getPayment();
 
-            $payment->setAdditionalInformation('Mode', 'Sandbox transaction!');
-
             $order = $payment->getOrder();
             $storeId = $order->getStoreId();
             if(!$this->_helper->isTestMode($storeId)){
                 $payment->setIsTransactionPending(true);
+                $payment->setIsTransactionApproved(false);
                 $payment->setIsFraudDetected(true);
-                $order->addCommentToStatusHistory(__('Order attempted paid with test card!!!!'));
+                $payment->addTransactionCommentsToOrder( $handlingSubject['transactionId']??$payment->getTransactionId(),__('Order attempted paid with test card!!!!'));
             } else {
                 if($order->isPaymentReview()){
-                    $payment->setIsTransactionPending(false);
-                    $payment->setIsTransactionApproved(true);
-                    if($order->isFraudDetected()){
+                    /** here we make sure other handlers not sent pending  */
+                    if($payment->getIsTransactionPending() != true){
+                        $payment->setIsTransactionPending(false);
+                    }
+                    /** here we make sure other handlers not rejected approving  */
+                    if($payment->getIsTransactionApproved() != false){
+                        $payment->setIsTransactionApproved(true);
+                    }
+
+                    if($order->isFraudDetected()
+                        /** here we make sure other handlers not detected fraud  */
+                        && ($payment->getIsFraudDetected() != true)
+                    ){
                         $payment->setIsFraudDetected(false);
                     }
-                    $order->addCommentToStatusHistory(__('Now is test mode. Test card was accepted.'));
+                    $payment->addTransactionCommentsToOrder($handlingSubject['transactionId']??$payment->getTransactionId(),__('Now is test mode. Test card was accepted.'));
                 }
             }
         }

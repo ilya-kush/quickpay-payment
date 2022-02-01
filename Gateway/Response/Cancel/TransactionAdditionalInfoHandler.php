@@ -23,7 +23,7 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
 
         if($responsePayment->getOperations()){
             foreach ($responsePayment->getOperations() as $operation){
-                /** Process capture operation */
+                /** Process cancel operation */
                 if($this->_operationHelper->isOperationCancel($operation) && $this->_operationHelper->isStatusCodeApproved($operation))
                 {
                     /** @var PaymentDataObjectInterface $paymentDO */
@@ -39,7 +39,4 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
             }
         }
     }
-
-
-
 }

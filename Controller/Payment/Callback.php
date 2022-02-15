@@ -190,6 +190,7 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface {
             if(in_array($this->_order->getState(),
                 [
                     Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE,
+                    Order::STATE_PAYMENT_REVIEW,
                     Order::STATE_NEW //<- to support payment created by old module
                 ])) {
                 try {

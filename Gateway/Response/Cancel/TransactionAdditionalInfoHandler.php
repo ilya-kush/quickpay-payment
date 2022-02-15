@@ -23,8 +23,9 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
 
         if($responsePayment->getOperations()){
             foreach ($responsePayment->getOperations() as $operation){
-                /** Process cancel operation */
-                if($this->_operationHelper->isOperationCancel($operation) && $this->_operationHelper->isStatusCodeApproved($operation))
+                /** Process cancel operation and only approved operation! */
+                if($this->_operationHelper->isOperationCancel($operation)
+                    && $this->_operationHelper->isStatusCodeApproved($operation))
                 {
                     /** @var PaymentDataObjectInterface $paymentDO */
                     $paymentDO = $handlingSubject['payment'];

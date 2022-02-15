@@ -44,18 +44,13 @@ class FraudHandler extends AbstractHandler{
                 $order = $payment->getOrder();
                 if($order->isPaymentReview()){
                     /** here we make sure other handlers not sent pending  */
-                    if($payment->getIsTransactionPending() != true){
-                        $payment->setIsTransactionPending(false);
-                    }
+                    $this->_checkAndSetIsTransactionPendingFalse($payment);
+
                     /** here we make sure other handlers not rejected approving  */
-                    if($payment->getIsTransactionApproved() != false){
-                        $payment->setIsTransactionApproved(true);
-                    }
+                    $this->_checkAndSetIsTransactionApprovedTrue($payment);
                     if ($order->isFraudDetected()) {
                         /** here we make sure other handlers not detected fraud  */
-                        if ($payment->getIsFraudDetected() != true) {
-                            $payment->setIsFraudDetected(false);
-                        }
+                        $this->_checkAndSetIsFraudDetectedFalse($payment);
 
                         if ($responsePayment->getMetadata()->getFraudReportDescription()) {
                             $payment->setAdditionalInformation('Fraud',$responsePayment->getMetadata()->getFraudReportDescription());

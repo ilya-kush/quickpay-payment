@@ -62,20 +62,16 @@ class TestDataHandler extends AbstractHandler {
             } else {
                 if($order->isPaymentReview()){
                     /** here we make sure other handlers not sent pending  */
-                    if($payment->getIsTransactionPending() != true){
-                        $payment->setIsTransactionPending(false);
-                    }
+                    $this->_checkAndSetIsTransactionPendingFalse($payment);
+
                     /** here we make sure other handlers not rejected approving  */
-                    if($payment->getIsTransactionApproved() != false){
-                        $payment->setIsTransactionApproved(true);
+                    $this->_checkAndSetIsTransactionApprovedTrue($payment);
+
+                    if($order->isFraudDetected()){
+                        /** here we make sure other handlers not detected fraud  */
+                        $this->_checkAndSetIsFraudDetectedFalse($payment);
                     }
 
-                    if($order->isFraudDetected()
-                        /** here we make sure other handlers not detected fraud  */
-                        && ($payment->getIsFraudDetected() != true)
-                    ){
-                        $payment->setIsFraudDetected(false);
-                    }
                     $payment->addTransactionCommentsToOrder($handlingSubject['transactionId']??$payment->getTransactionId(),__('Now is test mode. Test card was accepted.'));
                 }
             }

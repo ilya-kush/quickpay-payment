@@ -39,14 +39,18 @@ class MetaDataHandler extends AbstractHandler{
                 if ($responsePayment->getMetadata()->getType() == MetadataModelInterface::TYPE_CARD){
                     $payment->setCcType($responsePayment->getMetadata()->getBrand());
                     $payment->setCcLast4(sprintf("%s", $responsePayment->getMetadata()->getLast4()));
-                    $payment->setCcExpMonth($responsePayment->getMetadata()->getExpMonth());
-                    $payment->setCcExpYear($responsePayment->getMetadata()->getExpYear());
+
+                    if($responsePayment->getMetadata()->getExpMonth() && $responsePayment->getMetadata()->getExpYear() ){
+                        $payment->setCcExpMonth($responsePayment->getMetadata()->getExpMonth());
+                        $payment->setCcExpYear($responsePayment->getMetadata()->getExpYear());
+                        $payment->setAdditionalInformation('Card Expiration Date', date('Y-m', strtotime(sprintf("%s-%s", $responsePayment->getMetadata()->getExpYear(), $responsePayment->getMetadata()->getExpMonth()))));
+                    }
+
                     $payment->setCcStatusDescription($responsePayment->getMetadata()->getFraudReportDescription());
                     $payment->setCcTransId($responsePayment->getId());
 
                     $payment->setAdditionalInformation('Card Type', $responsePayment->getMetadata()->getBrand());
                     $payment->setAdditionalInformation('Card Number', sprintf("XXXX-%s", $responsePayment->getMetadata()->getLast4()));
-                    $payment->setAdditionalInformation('Card Expiration Date', date('Y-m', strtotime(sprintf("%s-%s", $responsePayment->getMetadata()->getExpYear(), $responsePayment->getMetadata()->getExpMonth()))));
 
                     if($responsePayment->getMetadata()->getIssuedTo()){
                         $payment->setCcOwner($responsePayment->getMetadata()->getIssuedTo());

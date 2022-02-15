@@ -76,6 +76,48 @@ abstract class AbstractHandler implements HandlerInterface {
     }
 
     /**
+     * We make sure other handlers not sent pending
+     *
+     * @param OrderPayment $payment
+     *
+     * @return OrderPayment
+     */
+    protected function _checkAndSetIsTransactionPendingFalse($payment){
+        if($payment->getIsTransactionPending() !== true){
+            $payment->setIsTransactionPending(false);
+        }
+        return $payment;
+    }
+
+    /**
+     * We make sure other handlers not rejected approving
+     * @param OrderPayment $payment
+     *
+     * @return OrderPayment
+     */
+    protected function _checkAndSetIsTransactionApprovedTrue($payment){
+        if($payment->getIsTransactionApproved() !== false){
+            $payment->setIsTransactionApproved(true);
+        }
+        return $payment;
+    }
+
+    /**
+     * We make sure other handlers not detected fraud
+     *
+     * @param OrderPayment $payment
+     *
+     * @return OrderPayment
+     */
+    protected function _checkAndSetIsFraudDetectedFalse($payment){
+        if ($payment->getIsFraudDetected() !== true) {
+            $payment->setIsFraudDetected(false);
+        }
+        return $payment;
+    }
+
+
+    /**
      * @param ResponseObject $responsePayment
      * @param array          $handlingSubject
      *

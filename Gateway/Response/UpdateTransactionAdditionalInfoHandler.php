@@ -68,13 +68,10 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
                         $order = $payment->getOrder();
                         if($order->isPaymentReview()){
                             /** here we make sure other handlers not sent pending  */
-                            if(!$payment->getIsTransactionPending() != true){
-                                $payment->setIsTransactionPending(false);
-                            }
+                            $this->_checkAndSetIsTransactionPendingFalse($payment);
+
                             /** here we make sure other handlers not rejected approving  */
-                            if($payment->getIsTransactionApproved() != false){
-                                $payment->setIsTransactionApproved(true);
-                            }
+                            $this->_checkAndSetIsTransactionApprovedTrue($payment);
                         }
                     }
 

@@ -21,7 +21,7 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
  */
 class CancelOrders {
 
-    CONST MIN_TIMEOUT_VALUE = 60;
+    CONST MIN_TIMEOUT_VALUE = 5;
 
     /**
      * @var Data
@@ -88,15 +88,15 @@ class CancelOrders {
         );
 
         $orders->addFieldToFilter('state',['in' => [Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE]])
-            ->addFieldToFilter('created_at',['lteq' => $timeOutPhpFormat])
+            ->addAttributeToFilter('created_at', array('to'=>$timeOutPhpFormat))
+//            ->addFieldToFilter('created_at',['lteq' => $timeOutPhpFormat])
             ->addFieldToFilter('method',['in' => $this->_groupSpecification->getGroupMethods()]);
 
         /** @var Order $order */
         foreach ($orders as $order){
             if($order->canCancel()){
                 try {
-                    $order->cancel();
-                    $order->addCommentToStatusHistory(__('Canceled by payment timeout.'),false,false);
+                    $order->registerCancellation(__('Canceled by payment timeout.'));
                     $this->_orderRepository->save($order);
                 } catch (\Exception $e) {}
             }

@@ -46,11 +46,11 @@ class CancelOrders {
 
 
     /**
-     * @param OrderRepository   $orderRepository
-     * @param Group             $groupSpecification
-     * @param CollectionFactory $orderCollectionFactory
-     * @param TimezoneInterface $localeDate
-     * @param Data              $helper
+     * @param OrderRepository            $orderRepository
+     * @param Group                      $groupSpecification
+     * @param CollectionFactory          $orderCollectionFactory
+     * @param TimezoneInterface          $localeDate
+     * @param Data                       $helper
      */
     public function __construct(
         OrderRepository $orderRepository,
@@ -72,25 +72,30 @@ class CancelOrders {
      */
     public function execute(){
 
+
         $timeOutValue = $this->_helper->getCancelTimeout();
         if(!$timeOutValue){ return true; }
         $timeOutValue = ($timeOutValue < self::MIN_TIMEOUT_VALUE)?self::MIN_TIMEOUT_VALUE:$timeOutValue;
 
-        $currentDate = $this->_localeDate->date();
+        $currentDate = $this->_localeDate->date(null,null,false); /** @var third param is important. We need GMT date.  */
         $timeOutDate = $currentDate->sub(new \DateInterval(sprintf("PT%dM", $timeOutValue)));
         $timeOutPhpFormat = $timeOutDate->format(FrameworkDateTime::DATETIME_PHP_FORMAT);
 
         $orders = $this->_orderCollectionFactory->create();
+
+        $orders
+            ->addAttributeToFilter('created_at', array('to'=>$timeOutPhpFormat))
+            ->addFieldToFilter('state',['in' => [Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE]])
+//            ->addFieldToFilter('created_at',['lteq' => $timeOutPhpFormat])
+        ;
+
         $orders->join(
             'sales_order_payment',
             '(main_table.entity_id = sales_order_payment.parent_id)',
             ['method']
         );
 
-        $orders->addFieldToFilter('state',['in' => [Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE]])
-            ->addAttributeToFilter('created_at', array('to'=>$timeOutPhpFormat))
-//            ->addFieldToFilter('created_at',['lteq' => $timeOutPhpFormat])
-            ->addFieldToFilter('method',['in' => $this->_groupSpecification->getGroupMethods()]);
+        $orders->addFieldToFilter('method',['in' => $this->_groupSpecification->getGroupMethods()]);
 
         /** @var Order $order */
         foreach ($orders as $order){

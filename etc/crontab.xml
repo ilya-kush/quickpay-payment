@@ -10,7 +10,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
 	<group id="default">
 		<job instance="HW\QuickPay\Cron\CancelOrders" method="execute" name="hw_quickpay_cron_cancelorders">
-			<schedule>0,30 * * * *</schedule>
+			<schedule>0/2 * * * *</schedule>
 		</job>
 	</group>
 </config>

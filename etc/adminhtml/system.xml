@@ -111,11 +111,11 @@
                         <config_path>payment/quickpay_gateway/title</config_path>
                     </field>
 
-<!--                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">-->
-<!--                        <label>New Order Status</label>-->
-<!--                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>-->
-<!--                        <config_path>payment/quickpay_gateway/order_status</config_path>-->
-<!--                    </field>-->
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_gateway/order_status</config_path>
+                    </field>
                     <field id="cardlogos" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Which card logos should be displayed</label>
                         <can_be_empty>1</can_be_empty>
@@ -176,6 +176,11 @@
                         <label>Title</label>
                         <config_path>payment/quickpay_mobilepay/title</config_path>
                     </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_mobilepay/order_status</config_path>
+                    </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
@@ -217,6 +222,11 @@
                         <label>Title</label>
                         <config_path>payment/quickpay_klarna/title</config_path>
                     </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_klarna/order_status</config_path>
+                    </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
@@ -256,6 +266,11 @@
                     <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_swish/title</config_path>
+                    </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_swish/order_status</config_path>
                     </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
@@ -297,6 +312,11 @@
                     <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_anyday/title</config_path>
+                    </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_anyday/order_status</config_path>
                     </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
@@ -340,6 +360,11 @@
                         <label>Title</label>
                         <config_path>payment/quickpay_trustly/title</config_path>
                     </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_trustly/order_status</config_path>
+                    </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
@@ -381,6 +406,11 @@
                         <label>Title</label>
                         <config_path>payment/quickpay_viabill/title</config_path>
                     </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_viabill/order_status</config_path>
+                    </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
@@ -421,6 +451,11 @@
                     <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_vipps/title</config_path>
+                    </field>
+                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>New Order Status</label>
+                        <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
+                        <config_path>payment/quickpay_vipps/order_status</config_path>
                     </field>
                     <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment From Applicable Countries</label>

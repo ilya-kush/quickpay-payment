@@ -1,49 +1,24 @@
 <?php
 /**
- *  AbstractRequest
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    12.10.2021
- * Time:    13:11
  */
 namespace HW\QuickPay\Gateway\Request;
 use HW\QuickPay\Gateway\Response\AbstractTransactionAdditionalInfoHandler;
 use Magento\Framework\Serialize\SerializerInterface;
-use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
 use HW\QuickPay\Gateway\Helper\AmountConverter;
 use HW\QuickPay\Helper\Data;
 use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
-/**
- *
- */
-abstract class AbstractRequest implements BuilderInterface {
-    /**
-     * @var Data
-     */
-    protected $_helper;
-    /**
-     * @var Logger
-     */
-    protected $_logger;
-    /**
-     * @var SerializerInterface
-     */
-    protected $_serializer;
-    /**
-     * @var AmountConverter
-     */
-    protected $_amountConverter;
 
-    /**
-     * @param SerializerInterface $serializer
-     * @param Data                $helper
-     * @param AmountConverter     $amountConverter
-     * @param Logger              $logger
-     */
+abstract class AbstractRequest implements BuilderInterface
+{
+    protected Data $_helper;
+    protected Logger $_logger;
+    protected SerializerInterface $_serializer;
+    protected AmountConverter $_amountConverter;
+
     public function __construct(
         SerializerInterface $serializer,
         Data                $helper,
@@ -56,47 +31,34 @@ abstract class AbstractRequest implements BuilderInterface {
         $this->_amountConverter = $amountConverter;
     }
 
-    /**
-     *
-     * @param string $lastTransactionId
-     *
-     * @return string
-     */
-    protected function _parseLastTransactionId($lastTransactionId){
-        $parts = explode(AbstractTransactionAdditionalInfoHandler::TXN_ID_MASK_SEPARATOR,$lastTransactionId);
+    protected function _parseLastTransactionId(string $lastTransactionId): string
+    {
+        $parts = explode(AbstractTransactionAdditionalInfoHandler::TXN_ID_MASK_SEPARATOR,
+            $lastTransactionId);
         return $parts[0];
     }
 
-    /**
-     * @param OrderPayment $payment
-     *
-     * @return string
-     */
-    protected function _getGatewayPaymentId($payment){
+    protected function _getGatewayPaymentId(OrderPayment $payment): string
+    {
         $paymentId = '';
         $additionalData = $payment->getAdditionalData();
-        if($additionalData) {
+        if ($additionalData) {
             $additionalData = $this->_serializer->unserialize($additionalData);
             $paymentId  = $additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_GATEWAY_TRANS_ID_CODE]??'';
-
         }
-
-        if(!$paymentId){
+        if (!$paymentId) {
             $paymentId  = $this->_parseLastTransactionId($payment->getLastTransId());
         }
-
         //Support of payment made with old module
-        if(!$paymentId){
+        if (!$paymentId) {
             $additionalInfo = $payment->getAdditionalInformation();
-            if($additionalInfo) {
-                if(!is_array($additionalInfo)){
+            if ($additionalInfo) {
+                if (!is_array($additionalInfo)) {
                     $additionalInfo = $this->_serializer->unserialize($additionalInfo);
                 }
                 $paymentId  = $additionalInfo['Transaction ID']??'';
             }
         }
-
         return $paymentId;
     }
-
 }

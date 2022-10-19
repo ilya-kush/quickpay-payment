@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- *  crontab
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
 	<group id="default">
 		<job instance="HW\QuickPay\Cron\CancelOrders" method="execute" name="hw_quickpay_cron_cancelorders">
 			<schedule>0/2 * * * *</schedule>

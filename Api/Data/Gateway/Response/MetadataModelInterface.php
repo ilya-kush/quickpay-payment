@@ -1,26 +1,17 @@
 <?php
 /**
- *
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    06.08.2021
- * Time:    18:03
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
-/**
- * Interface MetadataModelInterface
- *
- * @package HW\QuickPay
- */
+
 interface MetadataModelInterface {
 
     /**
      * Types of payment
      */
-    const TYPE_CARD     = 'card';
-    const TYPE_MOBILE   = 'mobile';
-    const TYPE_NIN      = 'nin';
+    public const TYPE_CARD     = 'card';
+    public const TYPE_MOBILE   = 'mobile';
+    public const TYPE_NIN      = 'nin';
 
     /**
      * Type (card, mobile, nin)

@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- *  di
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 -->
-
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Sales\Model\Order\StateResolver">
-        <plugin sortOrder="9999" name="resolver_payment_review" type="HW\QuickPay\Plugin\Sales\Model\Order\StateResolver"/>
+        <plugin sortOrder="9999" name="resolver_payment_review"
+                type="HW\QuickPay\Plugin\Sales\Model\Order\StateResolver"/>
     </type>
 
     <!-- *
@@ -95,7 +92,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayMobilePayConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_MOBILEPAY</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_MOBILEPAY
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayMobilePayBlockInfo" type="HW\QuickPay\Block\Info">
@@ -143,7 +142,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayKlarnaConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_KLARNA</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_KLARNA
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayKlarnaBlockInfo" type="HW\QuickPay\Block\Info">
@@ -239,7 +240,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayAnydayConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_ANYDAY</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_ANYDAY
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayAnydayBlockInfo" type="HW\QuickPay\Block\Info">
@@ -287,7 +290,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayTrustlyConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_TRUSTLY</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_TRUSTLY
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayTrustlyBlockInfo" type="HW\QuickPay\Block\Info">
@@ -335,7 +340,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayViaBillConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIABILL</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIABILL
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayViaBillBlockInfo" type="HW\QuickPay\Block\Info">
@@ -383,7 +390,9 @@
     <!-- Configuration reader -->
     <virtualType name="QuickPayVippsConfig" type="HW\QuickPay\Gateway\Config\General">
         <arguments>
-            <argument name="methodCode" xsi:type="const">HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIPPS</argument>
+            <argument name="methodCode" xsi:type="const">
+                HW\QuickPay\Model\Ui\Checkout\ConfigProvider::CODE_VIPPS
+            </argument>
         </arguments>
     </virtualType>
     <virtualType name="QuickPayVippsBlockInfo" type="HW\QuickPay\Block\Info">
@@ -451,16 +460,21 @@
     <!-- Initialize command -->
     <virtualType name="QuickPayCreditCardInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">QuickPayCreditCardInitializeRequestBuilderComposite</argument>
+            <argument name="requestBuilder" xsi:type="object">
+                QuickPayCreditCardInitializeRequestBuilderComposite
+            </argument>
             <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Initialization</argument>
             <argument name="validator" xsi:type="object">QuickPayInitializeValidators</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardInitializeResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!-- Initialization Request -->
-    <virtualType name="QuickPayCreditCardInitializeRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardInitializeRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -479,7 +493,8 @@
         </arguments>
     </virtualType>
     <!-- Initialization Response handlers -->
-    <virtualType name="QuickPayCreditCardInitializeResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardInitializeResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="txnid" xsi:type="string">HW\QuickPay\Gateway\Response\GatewayTransId</item>
@@ -503,7 +518,8 @@
         </arguments>
     </virtualType>
     <!-- Authorization Request -->
-    <virtualType name="QuickPayCreditCardAuthorizeRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardAuthorizeRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -522,14 +538,17 @@
         </arguments>
     </virtualType>
     <!-- Authorization Response handlers -->
-    <virtualType name="QuickPayCreditCardAuthorizeResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardAuthorizeResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
 <!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
 <!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Authorize\TransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\Authorize\TransactionAdditionalInfoHandler
+                </item>
                 <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
@@ -544,7 +563,9 @@
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Capture</argument>
             <argument name="validator" xsi:type="object">QuickPayCaptureValidators</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardCaptureResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!--Auto Capture command   -->
@@ -555,11 +576,14 @@
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Get</argument>
             <argument name="validator" xsi:type="object">QuickPayCaptureValidators</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardAutoCaptureResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!-- Capture Request -->
-    <virtualType name="QuickPayCreditCardCaptureRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardCaptureRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -579,27 +603,33 @@
         </arguments>
     </virtualType>
     <!-- Capture Response handlers -->
-    <virtualType name="QuickPayCreditCardCaptureResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardCaptureResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
 <!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
 <!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler
+                </item>
                 <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>
     <!-- Autocapture Response handlers -->
-    <virtualType name="QuickPayCreditCardAutoCaptureResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardAutoCaptureResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
 <!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */-->
 <!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\Capture\TransactionAdditionalInfoHandler
+                </item>
                 <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
@@ -614,11 +644,14 @@
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Refund</argument>
             <argument name="validator" xsi:type="object">QuickPayRefundValidators</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardRefundResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!-- Refund Request -->
-    <virtualType name="QuickPayCreditCardRefundRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardRefundRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -638,12 +671,15 @@
         </arguments>
     </virtualType>
     <!-- Refund Response handlers -->
-    <virtualType name="QuickPayCreditCardRefundResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardRefundResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Refund\TransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\Refund\TransactionAdditionalInfoHandler
+                </item>
             </argument>
         </arguments>
     </virtualType>
@@ -657,11 +693,14 @@
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Cancel</argument>
             <argument name="validator" xsi:type="object">QuickPayCancelValidators</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardCancelResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!-- Cancel Request -->
-    <virtualType name="QuickPayCreditCardCancelRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardCancelRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -680,12 +719,15 @@
         </arguments>
     </virtualType>
     <!-- Cancel Response handlers -->
-    <virtualType name="QuickPayCreditCardCancelResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="QuickPayCreditCardCancelResponseHandlerComposite"
+                 type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="mode_data" xsi:type="string">HW\QuickPay\Gateway\Response\ModeDataHandler</item>
                 <item name="metadata" xsi:type="string">HW\QuickPay\Gateway\Response\MetaDataHandler</item>
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\Cancel\TransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\Cancel\TransactionAdditionalInfoHandler
+                </item>
             </argument>
         </arguments>
     </virtualType>
@@ -693,18 +735,24 @@
     <!-- ___________________-->
     <!-- Fetch info command -->
     <!-- Attention! We use our own gateway command and handler composite    -->
-    <virtualType name="QuickPayCreditCardFetchInfoCommand" type="HW\QuickPay\Gateway\Command\FetchTransactionInformation">
+    <virtualType name="QuickPayCreditCardFetchInfoCommand"
+                 type="HW\QuickPay\Gateway\Command\FetchTransactionInformation">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">QuickPayCreditCardFetchInfoRequestBuilderComposite</argument>
+            <argument name="requestBuilder" xsi:type="object">
+                QuickPayCreditCardFetchInfoRequestBuilderComposite
+            </argument>
             <argument name="transferFactory" xsi:type="object">HW\QuickPay\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">HW\QuickPay\Gateway\Http\Client\Get</argument>
             <argument name="validator" xsi:type="object">HW\QuickPay\Gateway\Validator\Response</argument>
             <argument name="handler" xsi:type="object">QuickPayCreditCardFetchInfoResponseHandlerComposite</argument>
-            <argument name="errorMessageMapper" xsi:type="object">HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">
+                HW\QuickPay\Gateway\ErrorMapper\ErrorMessageMapper
+            </argument>
         </arguments>
     </virtualType>
     <!-- Fetch info Request -->
-    <virtualType name="QuickPayCreditCardFetchInfoRequestBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="QuickPayCreditCardFetchInfoRequestBuilderComposite"
+                 type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="store_id" xsi:type="string">HW\QuickPay\Gateway\Request\StoreId</item>
@@ -714,16 +762,17 @@
     </virtualType>
     <!-- Fetch info Response handlers -->
     <!-- Attention! We use our own handler composite    -->
-    <virtualType name="QuickPayCreditCardFetchInfoResponseHandlerComposite" type="HW\QuickPay\Gateway\Response\HandlerChain\FetchTransactionInformation">
+    <virtualType name="QuickPayCreditCardFetchInfoResponseHandlerComposite"
+                 type="HW\QuickPay\Gateway\Response\HandlerChain\FetchTransactionInformation">
         <arguments>
             <argument name="handlers" xsi:type="array">
 <!--                /** Unfortunately we should avoid fraud suspect, because of "PSD2 - payments" rule */ -->
 <!--                <item name="fraud_data" xsi:type="string">HW\QuickPay\Gateway\Response\FraudHandler</item>-->
-
-                <item name="transaction_data" xsi:type="string">HW\QuickPay\Gateway\Response\UpdateTransactionAdditionalInfoHandler</item>
+                <item name="transaction_data" xsi:type="string">
+                    HW\QuickPay\Gateway\Response\UpdateTransactionAdditionalInfoHandler
+                </item>
                 <item name="test_data" xsi:type="string">HW\QuickPay\Gateway\Response\TestDataHandler</item>
             </argument>
         </arguments>
     </virtualType>
-
 </config>

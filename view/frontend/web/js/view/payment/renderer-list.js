@@ -1,7 +1,4 @@
 /**
- *  renderer-list
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 define([
@@ -10,7 +7,7 @@ define([
     ], function (
         Component,
         rendererList
-    ){
+    ) {
         'use strict';
         rendererList.push(
             {

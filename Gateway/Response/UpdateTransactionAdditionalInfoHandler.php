@@ -28,7 +28,8 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
      *
      * @return array|void
      */
-    public function handle(array $handlingSubject, array $response) {
+    public function handle(array $handlingSubject, array $response)
+    {
         if (!isset($handlingSubject['payment'])
             || !$handlingSubject['payment'] instanceof PaymentDataObjectInterface
         ) {
@@ -41,32 +42,35 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
 
     /**
      * @param ResponseObject $responsePayment
-     * @param array          $handlingSubject
-     *
      * @return array|void
-     *
      */
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject) {
-
-        if(!isset($handlingSubject['transactionId'])){
+	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject)
+    {
+        if (!isset($handlingSubject['transactionId'])) {
             return ;
         }
 
-        if($responsePayment->getOperations()){
-            foreach ($responsePayment->getOperations() as $operation){
-                if($this->_checkOperationIdAndType($operation,$handlingSubject['transactionId'])){
+        if ($responsePayment->getOperations()) {
+            foreach ($responsePayment->getOperations() as $operation) {
+                if ($this->_checkOperationIdAndType(
+                    $operation,
+                    $handlingSubject['transactionId'])
+                ) {
                     /** @var PaymentDataObjectInterface $paymentDO */
                     $paymentDO = $handlingSubject['payment'];
                     /** @var $payment OrderPayment */
                     $payment = $paymentDO->getPayment();
 
-                    if(!$this->_operationHelper->isStatusCodeApproved($operation)){
+                    if (!$this->_operationHelper->isStatusCodeApproved($operation)) {
                         $payment->setIsTransactionPending(true);
                         $payment->setIsTransactionApproved(false);
-                        $payment->addTransactionCommentsToOrder($handlingSubject['transactionId'],__($operation->getQpStatusMsg()));
+                        $payment->addTransactionCommentsToOrder(
+                            $handlingSubject['transactionId'],
+                            __($operation->getQpStatusMsg())
+                        );
                     } else {
                         $order = $payment->getOrder();
-                        if($order->isPaymentReview()){
+                        if ($order->isPaymentReview()) {
                             /** here we make sure other handlers not sent pending  */
                             $this->_checkAndSetIsTransactionPendingFalse($payment);
 
@@ -76,7 +80,7 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
                     }
 
                     $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
-                    return $payment->getTransactionAdditionalInfo()[PaymentTransactionModel::RAW_DETAILS]??void;
+                    return $payment->getTransactionAdditionalInfo()[PaymentTransactionModel::RAW_DETAILS] ?? void;
                 }
             }
         }
@@ -84,31 +88,32 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
 
     /**
      * It parses according self::TXN_ID_MASK
-     * @param string $handlingTransactionId
-     *
      * @return string[]
      */
-    protected function _parseHandlingTransactionId(string $handlingTransactionId):array {
+    protected function _parseHandlingTransactionId(string $handlingTransactionId): array
+    {
         $parsedArray = explode(self::TXN_ID_MASK_SEPARATOR,$handlingTransactionId);
 
-        $result[ConfigProvider::PAYMENT_ADDITIONAL_DATA_GATEWAY_TRANS_ID_CODE] = $parsedArray[0]??'';
-        $result['operation_type'] = $parsedArray[1]??'';
-        $result['operation_id'] = $parsedArray[2]??'';
+        $result[ConfigProvider::PAYMENT_ADDITIONAL_DATA_GATEWAY_TRANS_ID_CODE] = $parsedArray[0] ?? '';
+        $result['operation_type'] = $parsedArray[1] ?? '';
+        $result['operation_id'] = $parsedArray[2] ?? '';
 
         return $result;
     }
 
     /**
      * @param OperationModelInterface $operation
-     * @param string     $handlingTransactionId
-     *
-     * @return bool
      */
-    protected function _checkOperationIdAndType(DataObject $operation,string $handlingTransactionId):bool {
-
+    protected function _checkOperationIdAndType(DataObject $operation, string $handlingTransactionId): bool
+    {
         $parsedRequestedTransactionId = $this->_parseHandlingTransactionId($handlingTransactionId);
 
-        if(in_array($operation->getType(),[OperationModelInterface::OPERATION_TYPE_AUTHORIZE, OperationModelInterface::OPERATION_TYPE_RECURRING])  ){
+        if (in_array($operation->getType(),
+            [
+                OperationModelInterface::OPERATION_TYPE_AUTHORIZE,
+                OperationModelInterface::OPERATION_TYPE_RECURRING
+            ]
+        )) {
             /** Warning! We don't use TXN_ID_MASK for an authorize transaction.
              *  So if 'operation_type' and 'operation_id' are empty it means we handle an authorize transaction.
              */
@@ -119,18 +124,18 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
         }
 
         /** Here we process transaction that got id by default magento logic. void instead of cancel-%operation_id% */
-        if($parsedRequestedTransactionId['operation_type'] == TransactionInterface::TYPE_VOID){
+        if ($parsedRequestedTransactionId['operation_type'] == TransactionInterface::TYPE_VOID) {
             return $operation->getType() == OperationModelInterface::OPERATION_TYPE_CANCEL;
         }
 
         /** Rest of operations we match by operation id and operation type */
         $isOperationIdValid = false;
-        if($parsedRequestedTransactionId['operation_id']){
+        if ($parsedRequestedTransactionId['operation_id']) {
             $isOperationIdValid = ($operation->getId() == $parsedRequestedTransactionId['operation_id']);
         }
 
         $isOperationTypeValid = false;
-        if($parsedRequestedTransactionId['operation_type']){
+        if ($parsedRequestedTransactionId['operation_type']) {
             $isOperationTypeValid = ($operation->getType() == $parsedRequestedTransactionId['operation_type']);
         }
 

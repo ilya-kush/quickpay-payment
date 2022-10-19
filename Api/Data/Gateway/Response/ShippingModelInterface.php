@@ -1,11 +1,6 @@
 <?php
 /**
- *
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    13.08.2021
- * Time:    11:33
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
 /**

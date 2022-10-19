@@ -1,11 +1,6 @@
 <?php
 /**
- *  TransactionAdditionalInfoHandler
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    22.10.2021
- * Time:    18:47
  */
 namespace HW\QuickPay\Gateway\Response\Authorize;
 use HW\QuickPay\Api\Data\Gateway\Response\OperationModelInterface;
@@ -15,22 +10,20 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
 use HW\QuickPay\Gateway\Response\AbstractTransactionAdditionalInfoHandler;
 use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
-/**
- *
- */
-class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfoHandler {
-	/**
-	 * @inheritDoc
-	 */
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject) {
-
+class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfoHandler
+{
+	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
+    {
         $amount = $handlingSubject['amount']??null;
 
-        if($responsePayment->getOperations()){
+        if ($responsePayment->getOperations()) {
             $_authorizeOperations = [];
-            foreach ($responsePayment->getOperations() as $_operation){
+            foreach ($responsePayment->getOperations() as $_operation) {
                 /** Process authorization operation */
-                if (($this->_operationHelper->isOperationAuthorize($_operation) || $this->_operationHelper->isOperationRecurring($_operation)) && $this->_operationHelper->checkOperationAmount($_operation, $amount)){
+                if (($this->_operationHelper->isOperationAuthorize($_operation)
+                        || $this->_operationHelper->isOperationRecurring($_operation))
+                    && $this->_operationHelper->checkOperationAmount($_operation, $amount)
+                ) {
                     $_authorizeOperations[$_operation->getId()] = $_operation;
                 }
             }
@@ -48,26 +41,32 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
             $payment->setIsTransactionClosed(false);
 
             $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
-            $this->_addPaymentAdditionalData($payment,ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE,null);
+            $this->_addPaymentAdditionalData(
+                $payment,
+                ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE,
+                null
+            );
 
-            if(!$this->_operationHelper->isStatusCodeApproved($operation)){
+            if (!$this->_operationHelper->isStatusCodeApproved($operation)) {
                 $payment->setIsTransactionPending(true);
                 $payment->setIsTransactionApproved(false);
-                $payment->addTransactionCommentsToOrder($payment->getTransactionId(),__($operation->getQpStatusMsg()));
+                $payment->addTransactionCommentsToOrder(
+                    $payment->getTransactionId(),
+                    __($operation->getQpStatusMsg())
+                );
             } else {
                 $order = $payment->getOrder();
-                if($order->isPaymentReview()){
+                if ($order->isPaymentReview()) {
                     /** here we make sure other handlers not sent pending  */
-                    if(!$payment->getIsTransactionPending() != true){
+                    if (!$payment->getIsTransactionPending() != true) {
                         $payment->setIsTransactionPending(false);
                     }
                     /** here we make sure other handlers not rejected approving  */
-                    if($payment->getIsTransactionApproved() != false){
+                    if ($payment->getIsTransactionApproved() != false) {
                         $payment->setIsTransactionApproved(true);
                     }
                 }
             }
-
         }
 	}
 }

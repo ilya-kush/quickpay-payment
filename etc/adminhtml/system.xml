@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/**
- *  system
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
- * @author    Ilya Kushnir ilya.kush@gmail.com
- */
--->
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
 	<system>
         <section id="payment">
             <group id="quickpay_group" translate="label" showInDefault="9" showInWebsite="1" showInStore="1">
                 <label>QuickPay</label>
                 <group id="settings" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Settings</label>
-<!--                    <field id="version" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">-->
-<!--                        <label>Gateway Module version</label>-->
-<!--                        <frontend_model>HW\QuickPay\Model\Config\Block\Version</frontend_model>-->
-<!--                    </field>-->
-                    <field id="branding_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="branding_id"
+                           translate="label"
+                           type="text"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Branding ID</label>
                         <config_path>payment/quickpay_gateway/branding_id</config_path>
                     </field>
-                    <field id="send_order_email" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="send_order_email"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Send Order Email</label>
                         <source_model>HW\QuickPay\Model\Config\Source\SendEmailSequence</source_model>
                         <config_path>payment/quickpay_gateway/send_order_email</config_path>
                     </field>
-                    <field id="autocapture" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="autocapture"
+                           translate="label"
+                           type="select"
+                           sortOrder="5"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Autocapture</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_gateway/autocapture</config_path>
                     </field>
-                    <field id="send_invoice_email" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="send_invoice_email"
+                           translate="label"
+                           type="select"
+                           sortOrder="6"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Send Invoice Email</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_gateway/send_invoice_email</config_path>
@@ -42,7 +56,12 @@
                             <field id="*/*/*/autocapture">1</field>
                         </depends>
                     </field>
-                    <field id="timeout_to_cancel" translate="label comment" type="text" sortOrder="6" showInDefault="1" canRestore="1" >
+                    <field id="timeout_to_cancel"
+                           translate="label comment"
+                           type="text"
+                           sortOrder="6"
+                           showInDefault="1"
+                           canRestore="1">
                         <label>Timeout to cancel not paid orders</label>
                         <config_path>payment/quickpay_gateway/timeout_to_cancel</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
@@ -51,12 +70,22 @@
 
                     <group id="access" translate="label" sortOrder="7" showInDefault="1" showInWebsite="1">
                         <label>Access</label>
-                        <field id="apikey" translate="label" type="obscure" sortOrder="1" showInDefault="1" showInWebsite="1" >
+                        <field id="apikey"
+                               translate="label"
+                               type="obscure"
+                               sortOrder="1"
+                               showInDefault="1"
+                               showInWebsite="1">
                             <label>API key</label>
                             <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                             <config_path>payment/quickpay_gateway/apikey</config_path>
                         </field>
-                        <field id="private_key" translate="label" type="obscure" sortOrder="3" showInDefault="1" showInWebsite="1" >
+                        <field id="private_key"
+                               translate="label"
+                               type="obscure"
+                               sortOrder="3"
+                               showInDefault="1"
+                               showInWebsite="1">
                             <label>Private Key</label>
                             <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                             <config_path>payment/quickpay_gateway/private_key</config_path>
@@ -64,32 +93,69 @@
                     </group>
                     <group id="developer" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1">
                         <label>Developer</label>
-                        <field id="testmode" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" canRestore="1">
+                        <field id="testmode"
+                               translate="label"
+                               type="select"
+                               sortOrder="1"
+                               showInDefault="1"
+                               showInWebsite="1"
+                               canRestore="1">
                             <label>Sandbox</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/quickpay_gateway/testmode</config_path>
                         </field>
-                        <field id="debug" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" canRestore="1">
+                        <field id="debug"
+                               translate="label"
+                               type="select"
+                               sortOrder="2"
+                               showInDefault="1"
+                               showInWebsite="1"
+                               canRestore="1">
                             <label>Debug</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/quickpay_gateway/debug</config_path>
                         </field>
                     </group>
-                    <group id="transaction" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <group id="transaction"
+                           translate="label"
+                           sortOrder="10"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1">
                         <label>Transaction</label>
 
-                        <field id="text_on_statement" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <field id="text_on_statement"
+                               translate="label comment"
+                               type="text"
+                               sortOrder="10"
+                               showInDefault="1"
+                               showInWebsite="1"
+                               showInStore="1"
+                               canRestore="1">
                             <label>Text on statement</label>
                             <comment><![CDATA[Text that will be placed on cardholder’s bank statement (MAX 22 ASCII characters and <strong>only supported by Clearhaus currently</strong>).<br>Has to start with Default descriptor, as described in your agreement with Clearhaus]]></comment>
                             <validate>validate-length maximum-length-22</validate>
                             <config_path>payment/quickpay_gateway/text_on_statement</config_path>
                         </field>
-                        <field id="transaction_fee" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" canRestore="1">
+                        <field id="transaction_fee"
+                               translate="label"
+                               type="select"
+                               sortOrder="32"
+                               showInDefault="1"
+                               showInWebsite="1"
+                               canRestore="1">
                             <label>Add Transaction Fee</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/quickpay_gateway/transaction_fee</config_path>
                         </field>
-                        <field id="transaction_fee_label" translate="label comment" type="text" sortOrder="33" showInDefault="1" showInWebsite="1"  showInStore="1" canRestore="1">
+                        <field id="transaction_fee_label"
+                               translate="label comment"
+                               type="text"
+                               sortOrder="33"
+                               showInDefault="1"
+                               showInWebsite="1"
+                               showInStore="1"
+                               canRestore="1">
                             <label>Transaction Fee Label</label>
                             <comment>This will appear on the customers invoice</comment>
                             <config_path>payment/quickpay_gateway/transaction_fee_label</config_path>
@@ -99,35 +165,83 @@
                         </field>
                     </group>
                 </group>
-                <group id="quickpay_gateway" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" >
+                <group id="quickpay_gateway"
+                       translate="label"
+                       type="text"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Credit Card</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_gateway/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_gateway/title</config_path>
                     </field>
 
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_gateway/order_status</config_path>
                     </field>
-                    <field id="cardlogos" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="cardlogos"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="5"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Which card logos should be displayed</label>
                         <can_be_empty>1</can_be_empty>
                         <source_model>HW\QuickPay\Model\Config\Source\PaymentLogoList</source_model>
                         <config_path>payment/quickpay_gateway/cardlogos</config_path>
                     </field>
-                    <field id="payment_methods" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="payment_methods"
+                           translate="label"
+                           type="select"
+                           sortOrder="5"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment Methods</label>
                         <source_model>HW\QuickPay\Model\Config\Source\GatewayPaymentMethodsList</source_model>
                         <config_path>payment/quickpay_gateway/payment_methods</config_path>
                     </field>
-                    <field id="payment_method_specified" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="payment_method_specified"
+                           translate="label comment"
+                           type="text"
+                           sortOrder="6"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment Method</label>
                         <comment><![CDATA[Type in the cards you wish to accept (comma separated). See the valid payment types here: <a href="https://quickpay.net/uk/payment-methods" target="_blank" rel="noopener">https://quickpay.net/uk/payment-methods</a>]]></comment>
                         <config_path>payment/quickpay_gateway/payment_method_specified</config_path>
@@ -135,12 +249,26 @@
                             <field id="*/*/*/payment_methods">specified</field>
                         </depends>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_gateway/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_gateway/specificcountry</config_path>
@@ -149,44 +277,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_gateway/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_gateway/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_gateway/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_mobilepay"  translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_mobilepay"
+                       translate="label"
+                       type="text"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>MobilePay</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_mobilepay/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_mobilepay/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_mobilepay/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_mobilepay/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_mobilepay/specificcountry</config_path>
@@ -195,44 +383,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_mobilepay/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_mobilepay/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_mobilepay/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_klarna"  translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_klarna"
+                       translate="label"
+                       type="text"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Klarna</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_klarna/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_klarna/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_klarna/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_klarna/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_klarna/specificcountry</config_path>
@@ -241,43 +489,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_klarna/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_klarna/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
-                    </field>                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    </field>
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_klarna/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_swish"  translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_swish"
+                       translate="label"
+                       type="text"
+                       sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Swish</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_swish/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_swish/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_swish/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_swish/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_swish/specificcountry</config_path>
@@ -286,44 +595,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_swish/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_swish/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_swish/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_anyday"  translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_anyday"
+                       translate="label"
+                       type="text"
+                       sortOrder="50"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Anyday</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_anyday/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_anyday/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_anyday/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_anyday/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_anyday/specificcountry</config_path>
@@ -332,45 +701,105 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label comment" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label comment"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <comment>Cannot be less than 300.</comment>
                         <config_path>payment/quickpay_anyday/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater validate-number-range number-range-300-999999</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_anyday/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_anyday/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_trustly"  translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_trustly"
+                       translate="label"
+                       type="text"
+                       sortOrder="60"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Trustly</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_trustly/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_trustly/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_trustly/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_trustly/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_trustly/specificcountry</config_path>
@@ -379,44 +808,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_trustly/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_trustly/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_trustly/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_viabill"  translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_viabill"
+                       translate="label"
+                       type="text"
+                       sortOrder="70"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>ViaBill</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_viabill/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_viabill/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_viabill/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_viabill/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_viabill/specificcountry</config_path>
@@ -425,44 +914,104 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_viabill/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_viabill/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_viabill/sort_order</config_path>
                     </field>
                 </group>
-                <group id="quickpay_vipps"  translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="quickpay_vipps"
+                       translate="label"
+                       type="text"
+                       sortOrder="80"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
                     <label>Vipps</label>
-                    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="active"
+                           translate="label"
+                           type="select"
+                           sortOrder="1"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/quickpay_vipps/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="title"
+                           translate="label"
+                           type="text"
+                           sortOrder="2"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Title</label>
                         <config_path>payment/quickpay_vipps/title</config_path>
                     </field>
-                    <field id="order_status" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="order_status"
+                           translate="label"
+                           type="select"
+                           sortOrder="3"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>New Order Status</label>
                         <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                         <config_path>payment/quickpay_vipps/order_status</config_path>
                     </field>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="allowspecific"
+                           translate="label"
+                           type="allowspecific"
+                           sortOrder="7"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <config_path>payment/quickpay_vipps/allowspecific</config_path>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="specificcountry"
+                           translate="label"
+                           type="multiselect"
+                           sortOrder="8"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Payment From Specific Countries</label>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/quickpay_vipps/specificcountry</config_path>
@@ -471,17 +1020,36 @@
                             <field id="*/*/*/allowspecific">1</field>
                         </depends>
                     </field>
-                    <field id="min_order_total" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="min_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="18"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Minimum Order Total</label>
                         <config_path>payment/quickpay_vipps/min_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="max_order_total" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <field id="max_order_total"
+                           translate="label"
+                           type="text"
+                           sortOrder="19"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           canRestore="1">
                         <label>Maximum Order Total</label>
                         <config_path>payment/quickpay_vipps/max_order_total</config_path>
                         <validate>validate-number validate-zero-or-greater</validate>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="sort_order"
+                           translate="label"
+                           type="text"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1"
+                           showInStore="1"
+                           canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/quickpay_vipps/sort_order</config_path>

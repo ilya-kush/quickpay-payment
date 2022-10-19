@@ -1,37 +1,23 @@
 <?php
 /**
- *  PaymentLogoList
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    10.10.2021
- * Time:    21:25
  */
 namespace HW\QuickPay\Model\Config\Source;
-/**
- *
- */
-class PaymentLogoList implements \Magento\Framework\Data\OptionSourceInterface {
+use Magento\Framework\Data\OptionSourceInterface;
 
-    /**
-     * Return array of options as value-label pairs
-     *
-     * @return array Format: array(array('value' => '<value>' => '<label>'), ...)
-     */
-    public function toOptionArray(){
+class PaymentLogoList implements OptionSourceInterface
+{
+    public function toOptionArray(): array
+    {
         $result = [];
-        foreach ($this->getValuesArray() as $value => $label ){
+        foreach ($this->getValuesArray() as $value => $label ) {
             $result[$value] = ['label' => $label, 'value' => $value];
         }
         return $result;
     }
 
-    /**
-     * Get options in "key-value" format
-     *
-     * @return array
-     */
-    public function getValuesArray() {
+    public function getValuesArray(): array
+    {
         return [
             'dankort'            => __('Dankort'),
             'forbrugsforeningen' => __('Forbrugsforeningen'),

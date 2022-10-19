@@ -1,11 +1,6 @@
 <?php
 /**
- *  Synchronized
- *
- * @copyright Copyright © 2022 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    06.01.2022
- * Time:    11:45
  */
 namespace HW\QuickPay\Gateway\Request;
 use HW\QuickPay\Gateway\Helper\AmountConverter;
@@ -15,22 +10,10 @@ use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Model\Method\Logger;
 
-/**
- *
- */
-class Synchronized extends AbstractRequest {
-    /**
-     * @var SynchronizedSpecification
-     */
-    protected $_synchronizedSpecification;
+class Synchronized extends AbstractRequest
+{
+    protected SynchronizedSpecification $_synchronizedSpecification;
 
-    /**
-     * @param SynchronizedSpecification $synchronizedSpecification
-     * @param SerializerInterface       $serializer
-     * @param Data                      $helper
-     * @param AmountConverter           $amountConverter
-     * @param Logger                    $logger
-     */
     public function __construct(
         SynchronizedSpecification $synchronizedSpecification,
         SerializerInterface $serializer,
@@ -42,11 +25,8 @@ class Synchronized extends AbstractRequest {
         $this->_synchronizedSpecification = $synchronizedSpecification;
     }
 
-    /**
-	 * @inheritDoc
-	 */
-	public function build(array $buildSubject) {
-
+	public function build(array $buildSubject): array
+    {
         if (!isset($buildSubject['payment'])
             || !$buildSubject['payment'] instanceof PaymentDataObjectInterface
         ) {
@@ -57,7 +37,7 @@ class Synchronized extends AbstractRequest {
         $paymentDO = $buildSubject['payment'];
         $payment = $paymentDO->getPayment();
 
-        if($this->_synchronizedSpecification->isSatisfiedBy($payment->getMethod())){
+        if ($this->_synchronizedSpecification->isSatisfiedBy($payment->getMethod())) {
             return [
                 SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE => true
             ];

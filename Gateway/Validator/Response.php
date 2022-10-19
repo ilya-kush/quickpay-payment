@@ -1,24 +1,15 @@
 <?php
 /**
- *  Response
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    12.10.2021
- * Time:    14:46
  */
 namespace HW\QuickPay\Gateway\Validator;
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterfaceFactory;
-/**
- *
- */
+
 class Response extends AbstractValidator {
 
-    /**
-	 * @inheritDoc
-	 */
-	public function validate(array $validationSubject) {
+	public function validate(array $validationSubject)
+    {
         if (!isset($validationSubject['response']) || !is_array($validationSubject['response'])) {
             throw new \InvalidArgumentException('Response does not exist');
         }
@@ -27,16 +18,16 @@ class Response extends AbstractValidator {
         $errors = [];
 
         // Quickpay sends empty response with thirdpatry payment methods (ex. anyday)
-//        if(empty($responseArray) || !is_array($validationSubject['response'])){
+//        if (empty($responseArray) || !is_array($validationSubject['response'])) {
 //            $errors[] = 'Empty response.';
 //        }
 
-        if(isset($responseArray['message']) || isset($responseArray['errors'])){
-            if(isset($responseArray['message'])){
+        if (isset($responseArray['message']) || isset($responseArray['errors'])) {
+            if (isset($responseArray['message'])) {
                 $errors[] = sprintf("%s:", $responseArray['message']);
             }
-            if(isset($responseArray['errors']) && is_array($responseArray['errors'])){
-                foreach ($responseArray['errors'] as $_field => $_validationError){
+            if (isset($responseArray['errors']) && is_array($responseArray['errors'])) {
+                foreach ($responseArray['errors'] as $_field => $_validationError) {
                     $errors[] = sprintf(' %s - %s.',$_field,  implode(',',$_validationError));
                 }
             }

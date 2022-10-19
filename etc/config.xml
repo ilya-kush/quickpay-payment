@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- *  config
- *
  * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 -->
-
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 	<default>
         <payment>
             <quickpay_gateway>
@@ -55,7 +53,7 @@
                 <timeout_to_cancel>7200</timeout_to_cancel>
                 <debugReplaceKeys>apikey,private_key</debugReplaceKeys>
                 <paymentInfoKeys>Type,Phone number,Nin number,Nin country,Nin gender,Card Type,Card Number,Card Owner,Card Expiration Date,Currency,Mode,Capture mode,Autofee,Transaction fee,Fraud,Fraud report</paymentInfoKeys>
-                <privateInfoKeys></privateInfoKeys>
+                <privateInfoKeys/>
             </quickpay_gateway>
             <quickpay_mobilepay>
                 <active>0</active>

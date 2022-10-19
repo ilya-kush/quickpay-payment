@@ -1,11 +1,6 @@
 <?php
 /**
- *  AbstractClient
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    12.10.2021
- * Time:    11:34
  */
 namespace HW\QuickPay\Gateway\Http\Client;
 
@@ -18,26 +13,13 @@ use QuickPay\API\Response;
 use HW\QuickPay\Helper\Data;
 use QuickPay\QuickPay as GatewayClientClass;
 
-/**
- *
- */
-abstract class AbstractClient implements ClientInterface {
+abstract class AbstractClient implements ClientInterface
+{
+    public const SYNCHRONIZED_QUERY = '?synchronized';
 
-    const SYNCHRONIZED_QUERY = '?synchronized';
-
-    /**
-     * @var Data
-     */
-    protected $_helper;
-    /**
-     * @var Logger
-     */
+    protected Data $_helper;
     protected Logger $_logger;
 
-    /**
-     * @param Data   $helper
-     * @param Logger $logger
-     */
     public function __construct(
         Data            $helper,
         Logger          $logger
@@ -46,11 +28,8 @@ abstract class AbstractClient implements ClientInterface {
         $this->_helper = $helper;
     }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function placeRequest(TransferInterface $transferObject) {
-
+	public function placeRequest(TransferInterface $transferObject)
+    {
         $parameters = $transferObject->getBody();
         $response   = [];
         try {
@@ -70,40 +49,26 @@ abstract class AbstractClient implements ClientInterface {
                 ]
             );
         }
-
         return $response;
 	}
 
-    /**
-     * @param array $parameters
-     *
-     * @return Response
-     */
-    abstract protected function _doRequest($parameters);
+    abstract protected function _doRequest(array $parameters): Response;
 
-    /**
-     * @param string $callbackUrl
-     *
-     * @return GatewayClientClass
-     */
-    protected function _getGatewayClient($storeId = null,$callbackUrl = null) {
+    protected function _getGatewayClient($storeId = null, string $callbackUrl = null): GatewayClientClass
+    {
         $api_key = $this->_helper->getApiKey($storeId);
         $additional_headers = [];
-        if($callbackUrl){
+        if ($callbackUrl) {
             $additional_headers[] = sprintf("QuickPay-Callback-Url: %s", $callbackUrl);
         }
         $client  = new GatewayClientClass(":{$api_key}",$additional_headers);
         return $client;
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return bool
-     */
-    protected function _isSynchronizedQuery($parameters){
-        if(isset($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE])){
-            if($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE]){
+    protected function _isSynchronizedQuery(array $parameters): bool
+    {
+        if (isset($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE])) {
+            if ($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE]) {
                 return true;
             }
             unset($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE]);

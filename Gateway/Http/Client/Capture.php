@@ -1,33 +1,30 @@
 <?php
 /**
- *  Capture
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    22.10.2021
- * Time:    20:12
  */
 namespace HW\QuickPay\Gateway\Http\Client;
 use HW\QuickPay\Model\Payment\Method\Specification\Synchronized as SynchronizedSpecification;
 use QuickPay\API\Response;
-/**
- *
- */
-class Capture extends AbstractClient {
-	/**
-	 * @inheritDoc
-	 */
-	protected function _doRequest($parameters) {
+
+class Capture extends AbstractClient
+{
+	protected function _doRequest(array $parameters): Response
+    {
         $paymentId = $parameters['id'];
         $storeId   = $parameters['store_id'];
         unset($parameters['id'],$parameters['store_id']);
 
         $synchronizedRequest = $this->_isSynchronizedQuery($parameters);
-        if($synchronizedRequest){
+        if ($synchronizedRequest) {
             unset($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE]);
         }
 
         $client = $this->_getGatewayClient($storeId);
-        return $client->request->post(sprintf('/payments/%s/capture%s', $paymentId,$synchronizedRequest?self::SYNCHRONIZED_QUERY:''),$parameters);
+        return $client->request->post(
+            sprintf(
+                '/payments/%s/capture%s',
+                $paymentId,$synchronizedRequest?self::SYNCHRONIZED_QUERY:''),
+            $parameters
+        );
 	}
 }

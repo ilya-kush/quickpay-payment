@@ -1,25 +1,27 @@
 {
-  "name": "hw/quickpay-payment-magento2",
-  "version": "3.0.0",
-  "description": "Implements integration with the QuickPay payment service provider.",
-  "type": "magento2-module",
-  "require": {
-    "php": "~7.4.0",
-    "magento/framework": "*",
-    "magento/module-checkout": "100.4.*",
-    "magento/module-payment": "100.4.*",
-    "magento/module-sales": "103.0.*",
-    "quickpay/quickpay-php-client": ">=1.1.*"
-  },
-  "license": [
-    "Proprietary"
-  ],
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "hw/quickpay-payment",
+    "version": "3.1.6",
+    "description": "Implements integration with the QuickPay payment service provider.",
+    "authors": [
+        {
+            "name": "Ilya Kushnir",
+            "email": "ilya.kush@gmail.com"
+        }
     ],
-    "psr-4": {
-      "HW\\QuickPay\\": ""
+    "type": "magento2-module",
+    "require": {
+        "quickpay/quickpay-php-client": ">=1.1.*"
+    },
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "HW\\QuickPay\\": ""
+        }
     }
-  }
 }

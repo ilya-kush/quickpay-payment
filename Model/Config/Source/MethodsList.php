@@ -1,42 +1,27 @@
 <?php
 /**
- *  MethodsList
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    08.11.2021
- * Time:    12:45
  */
 namespace HW\QuickPay\Model\Config\Source;
 use Magento\Framework\Data\OptionSourceInterface;
 use HW\QuickPay\Model\Payment\Method\Specification\Group as GroupSpecification;
-/**
- *
- */
-class MethodsList implements OptionSourceInterface {
-    /** @var  \Magento\Payment\Helper\Data */
-    protected $paymentHelper;
+use Magento\Payment\Helper\Data;
 
-    /**
-     * @var GroupSpecification
-     */
-    protected $gatewaySpecification;
+class MethodsList implements OptionSourceInterface
+{
+    protected Data $paymentHelper;
+    protected GroupSpecification $gatewaySpecification;
 
-    /**
-     * @param \Magento\Payment\Helper\Data $paymentHelper
-     * @param GroupSpecification           $gatewaySpecification
-     */
     public function __construct(
-        \Magento\Payment\Helper\Data $paymentHelper,
+        Data $paymentHelper,
         GroupSpecification $gatewaySpecification
     ) {
         $this->paymentHelper          = $paymentHelper;
         $this->gatewaySpecification = $gatewaySpecification;
     }
-	/**
-	 * @inheritDoc
-	 */
-	public function toOptionArray() {
+
+	public function toOptionArray(): array
+    {
         $result = [];
         foreach ($this->paymentHelper->getPaymentMethods() as $code => $data) {
             if ($this->gatewaySpecification->isSatisfiedBy($code)) {

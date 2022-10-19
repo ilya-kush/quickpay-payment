@@ -1,43 +1,31 @@
 <?php
 /**
- *
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    09.08.2021
- * Time:    12:49
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
 
-/**
- * Operation Model
- *
- */
 interface OperationModelInterface {
 
-    const OPERATION_TYPE_AUTHORIZE = 'authorize';
-    const OPERATION_TYPE_RECURRING = 'recurring';
-    const OPERATION_TYPE_CAPTURE   = 'capture';
-    const OPERATION_TYPE_REFUND    = 'refund';
-    const OPERATION_TYPE_CANCEL    = 'cancel';
+    public const OPERATION_TYPE_AUTHORIZE = 'authorize';
+    public const OPERATION_TYPE_RECURRING = 'recurring';
+    public const OPERATION_TYPE_CAPTURE   = 'capture';
+    public const OPERATION_TYPE_REFUND    = 'refund';
+    public const OPERATION_TYPE_CANCEL    = 'cancel';
 
     /**
      * Payent Id
-     *
      * @return int
      */
     public function getId():int;
 
     /**
      * Type of operation (capture, etc)
-     *
      * @return string
      */
     public function getType():string;
 
     /**
      * Amount (dived 100 to get decimal)
-     *
      * @return int
      */
     public function getAmount():int;
@@ -66,7 +54,7 @@ interface OperationModelInterface {
      */
     public function getCallbackAt():string;
 
-        /**
+    /**
      * QuickPay status code
      * @return string
      */

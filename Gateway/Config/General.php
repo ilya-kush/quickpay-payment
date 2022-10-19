@@ -1,26 +1,20 @@
 <?php
 /**
- *  General
- *
- * @copyright Copyright © 2021 https://headwayit.com/ HeadWayIt. All rights reserved.
  * @author    Ilya Kushnir ilya.kush@gmail.com
- * Date:    10.10.2021
- * Time:    20:36
  */
 namespace HW\QuickPay\Gateway\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use HW\QuickPay\Helper\Data;
 use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
-/**
- *
- */
-class General implements \Magento\Payment\Gateway\ConfigInterface {
-    const DEFAULT_PATH_PATTERN            = 'payment/%s/%s';
+class General implements ConfigInterface
+{
+    public const DEFAULT_PATH_PATTERN = 'payment/%s/%s';
 
     /** Set of general settings*/
-    const IN_COMMON_FIELDS                = [
+    public const IN_COMMON_FIELDS                = [
         Data::PUBLIC_KEY_XML_CODE,
         Data::PRIVATE_KEY_XML_CODE,
         Data::TESTMODE_XML_CODE,
@@ -37,48 +31,31 @@ class General implements \Magento\Payment\Gateway\ConfigInterface {
         'paymentInfoKeys'
     ];
 
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $_scopeConfig;
+    protected ScopeConfigInterface $_scopeConfig;
+    protected ?string $methodCode;
+    protected ?string $pathPattern;
+    protected Data $_helper;
 
-    /**
-     * @var string|null
-     */
-    protected $methodCode;
-
-    /**
-     * @var string|null
-     */
-    protected $pathPattern;
-    /**
-     * @var Data
-     */
-    protected $_helper;
-
-    /**
-     * @param Data                 $helper
-     * @param ScopeConfigInterface $scopeConfig
-     * @param string|null          $methodCode
-     * @param string               $pathPattern
-     */
     public function __construct(
         Data                 $helper,
         ScopeConfigInterface $scopeConfig,
-                             $methodCode = null,
-                             $pathPattern = self::DEFAULT_PATH_PATTERN
+        string               $methodCode = null,
+        string               $pathPattern = self::DEFAULT_PATH_PATTERN
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->methodCode   = $methodCode;
         $this->pathPattern = $pathPattern;
         $this->_helper = $helper;
     }
-    /**
-     * @inheritDoc
-     */
-    public function getValue($field, $storeId = null) {
 
-        if(in_array($field,self::IN_COMMON_FIELDS)){
+    /**
+     * @param $field
+     * @param $storeId
+     * @return mixed|null
+     */
+    public function getValue($field, $storeId = null)
+    {
+        if (in_array($field,self::IN_COMMON_FIELDS)) {
             $methodCode = DATA::GENERAL_SETTINGS_CODE;
         } else {
             $methodCode = $this->methodCode;
@@ -95,132 +72,109 @@ class General implements \Magento\Payment\Gateway\ConfigInterface {
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setMethodCode($methodCode) {
+    public function setMethodCode($methodCode)
+    {
         $this->methodCode = $methodCode;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setPathPattern($pathPattern) {
+    public function setPathPattern($pathPattern)
+    {
         $this->pathPattern = $pathPattern;
     }
 
     /**
      * @param string   $path
      * @param int|null $storeId
-     *
      * @return mixed
      */
-    public function getConfigValue($path, $storeId = null)  {
+    public function getConfigValue($path, $storeId = null)
+    {
         return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE,$storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return bool
      */
-    public function isTestMode($storeId = null){
+    public function isTestMode($storeId = null): bool
+    {
         return $this->_helper->isTestMode($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return string
      */
-    public function getTextOnStatement($storeId = null){
+    public function getTextOnStatement($storeId = null): string
+    {
         return $this->_helper->getTextOnStatement($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return string
      */
-    public function getApiKey($storeId = null){
+    public function getApiKey($storeId = null): string
+    {
         return $this->_helper->getApiKey($storeId);
     }
     /**
      * @param null|int|string $storeId
-     *
-     * @return string
      */
-    public function getPrivateKey($storeId = null){
+    public function getPrivateKey($storeId = null): string
+    {
         return $this->_helper->getPrivateKey($storeId);
     }
 
     /**
-     * Get a setting value
-     *
-     * @return string
+     * @param null|int|string $storeId
      */
-    public function getDefaultLocale($storeId = null) {
+    public function getDefaultLocale($storeId = null): string
+    {
         return $this->_helper->getDefaultLocale($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return string
      */
-    public function getBrandingId($storeId = null){
+    public function getBrandingId($storeId = null): string
+    {
         return $this->_helper->getBrandingId($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return bool
      */
-    public function captureTransactionFee($storeId = null){
+    public function captureTransactionFee($storeId = null): bool
+    {
         return $this->_helper->captureTransactionFee($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return bool
      */
-    public function isAutoCaptureMode($storeId = null){
+    public function isAutoCaptureMode($storeId = null): bool
+    {
         return $this->_helper->isAutoCaptureMode($storeId);
     }
 
     /**
      * @param null|int|string $storeId
-     *
-     * @return bool
      */
-    public function ifSendOrderConformationEmailByDefaultMagentoLogic($storeId = null){
+    public function ifSendOrderConformationEmailByDefaultMagentoLogic($storeId = null): bool
+    {
         return $this->_helper->ifSendOrderConformationEmailByDefaultMagentoLogic($storeId);
     }
 
-    /**
-     * @param array $params
-     *
-     * @return string
-     */
-    public function getCallbackUrl($params = []){
+    public function getCallbackUrl(array $params = []): string
+    {
         return $this->_helper->getCallbackUrl($params);
     }
-    /**
-     * @param array $params
-     *
-     * @return string
-     */
-    public function getCancelUrl($params = []){
+
+    public function getCancelUrl(array $params = []): string
+    {
         return $this->_helper->getCancelUrl($params);
     }
-    /**
-     * @param array $params
-     *
-     * @return string
-     */
-    public function getContinueUrl($params = []){
+
+    public function getContinueUrl(array $params = []): string
+    {
         return $this->_helper->getContinueUrl($params);
     }
 }

@@ -1,6 +1,5 @@
 {
-    "name": "hw/quickpay-payment",
-    "version": "3.1.6",
+    "name": "ik/magento-2-payment-quickpay",
     "description": "Implements integration with the QuickPay payment service provider.",
     "authors": [
         {
@@ -10,7 +9,8 @@
     ],
     "type": "magento2-module",
     "require": {
-        "quickpay/quickpay-php-client": ">=1.1.*"
+        "php": "~7.4.0||~8.1.0",
+        "quickpay/quickpay-php-client": "^1.1.0"
     },
     "license": [
         "OSL-3.0",

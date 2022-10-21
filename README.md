@@ -12,7 +12,7 @@ composer require quickpay/quickpay-php-client 1.1.0
 * Copy source files in folder app\code\HW\QuickPay\
 
 
-### Run commands ###
+### Run commands after installation ###
 ```
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile

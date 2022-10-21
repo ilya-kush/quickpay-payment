@@ -1,13 +1,18 @@
 # README #
+### Installation by composer ###
+```
+composer require ik/magento-2-payment-quickpay
+```
 
-### Installation ###
-
+### Installation by copying ###
 * Install quickpay-php-client by composer
 ```
-composer require quickpay/quickpay-php-client >=1.1.*
+composer require quickpay/quickpay-php-client 1.1.0
 ```
 * Copy source files in folder app\code\HW\QuickPay\
-* Run commands
+
+
+### Run commands ###
 ```
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile

@@ -3,11 +3,12 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Request;
+
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 
 class StoreId extends AbstractRequest
 {
-	public function build(array $buildSubject): array
+    public function build(array $buildSubject): array
     {
         if (!isset($buildSubject['payment'])
             || !$buildSubject['payment'] instanceof PaymentDataObjectInterface
@@ -19,5 +20,5 @@ class StoreId extends AbstractRequest
         return [
             'store_id' => $payment->getOrder()->getStoreId()
         ];
-	}
+    }
 }

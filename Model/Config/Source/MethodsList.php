@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Model\Config\Source;
+
 use Magento\Framework\Data\OptionSourceInterface;
 use HW\QuickPay\Model\Payment\Method\Specification\Group as GroupSpecification;
 use Magento\Payment\Helper\Data;
@@ -20,7 +21,7 @@ class MethodsList implements OptionSourceInterface
         $this->gatewaySpecification = $gatewaySpecification;
     }
 
-	public function toOptionArray(): array
+    public function toOptionArray(): array
     {
         $result = [];
         foreach ($this->paymentHelper->getPaymentMethods() as $code => $data) {
@@ -32,5 +33,5 @@ class MethodsList implements OptionSourceInterface
             }
         }
         return $result;
-	}
+    }
 }

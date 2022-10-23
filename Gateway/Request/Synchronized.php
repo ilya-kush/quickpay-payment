@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Request;
+
 use HW\QuickPay\Gateway\Helper\AmountConverter;
 use HW\QuickPay\Helper\Data;
 use HW\QuickPay\Model\Payment\Method\Specification\Synchronized as SynchronizedSpecification;
@@ -12,7 +13,7 @@ use Magento\Payment\Model\Method\Logger;
 
 class Synchronized extends AbstractRequest
 {
-    protected SynchronizedSpecification $_synchronizedSpecification;
+    protected SynchronizedSpecification $synchronizedSpecification;
 
     public function __construct(
         SynchronizedSpecification $synchronizedSpecification,
@@ -22,10 +23,10 @@ class Synchronized extends AbstractRequest
         Logger $logger
     ) {
         parent::__construct($serializer, $helper, $amountConverter, $logger);
-        $this->_synchronizedSpecification = $synchronizedSpecification;
+        $this->synchronizedSpecification = $synchronizedSpecification;
     }
 
-	public function build(array $buildSubject): array
+    public function build(array $buildSubject): array
     {
         if (!isset($buildSubject['payment'])
             || !$buildSubject['payment'] instanceof PaymentDataObjectInterface
@@ -37,12 +38,12 @@ class Synchronized extends AbstractRequest
         $paymentDO = $buildSubject['payment'];
         $payment = $paymentDO->getPayment();
 
-        if ($this->_synchronizedSpecification->isSatisfiedBy($payment->getMethod())) {
+        if ($this->synchronizedSpecification->isSatisfiedBy($payment->getMethod())) {
             return [
                 SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE => true
             ];
         }
 
         return [];
-	}
+    }
 }

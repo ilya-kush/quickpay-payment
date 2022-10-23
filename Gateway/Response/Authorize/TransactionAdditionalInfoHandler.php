@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response\Authorize;
+
 use HW\QuickPay\Api\Data\Gateway\Response\OperationModelInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
@@ -12,7 +13,7 @@ use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
 class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfoHandler
 {
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
     {
         $amount = $handlingSubject['amount']??null;
 
@@ -20,9 +21,9 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
             $_authorizeOperations = [];
             foreach ($responsePayment->getOperations() as $_operation) {
                 /** Process authorization operation */
-                if (($this->_operationHelper->isOperationAuthorize($_operation)
-                        || $this->_operationHelper->isOperationRecurring($_operation))
-                    && $this->_operationHelper->checkOperationAmount($_operation, $amount)
+                if (($this->operationHelper->isOperationAuthorize($_operation)
+                        || $this->operationHelper->isOperationRecurring($_operation))
+                    && $this->operationHelper->checkOperationAmount($_operation, $amount)
                 ) {
                     $_authorizeOperations[$_operation->getId()] = $_operation;
                 }
@@ -40,14 +41,14 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
             $payment->setTransactionId($responsePayment->getId());
             $payment->setIsTransactionClosed(false);
 
-            $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
-            $this->_addPaymentAdditionalData(
+            $this->setTransactionAdditionalInfoFromOperation($operation, $payment);
+            $this->addPaymentAdditionalData(
                 $payment,
                 ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE,
                 null
             );
 
-            if (!$this->_operationHelper->isStatusCodeApproved($operation)) {
+            if (!$this->operationHelper->isStatusCodeApproved($operation)) {
                 $payment->setIsTransactionPending(true);
                 $payment->setIsTransactionApproved(false);
                 $payment->addTransactionCommentsToOrder(
@@ -68,5 +69,5 @@ class TransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfo
                 }
             }
         }
-	}
+    }
 }

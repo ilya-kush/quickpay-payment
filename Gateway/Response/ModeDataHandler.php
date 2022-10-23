@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
 use HW\QuickPay\Api\Data\Gateway\Response\PaymentModelInterface;
@@ -10,7 +11,7 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
 
 class ModeDataHandler extends AbstractHandler
 {
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
     {
         if ($responsePayment->getType() != PaymentModelInterface::MODEL_TYPE_PAYMENT) {
             return;
@@ -36,5 +37,5 @@ class ModeDataHandler extends AbstractHandler
                 $payment->setAdditionalInformation('Capture mode', 'Auto');
             }
         }
-	}
+    }
 }

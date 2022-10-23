@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Framework\DataObject;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
@@ -15,7 +16,7 @@ abstract class AbstractTransactionAdditionalInfoHandler extends AbstractHandler
 {
     public const TXN_ID_MASK_SEPARATOR = '-';
     public const TXN_ID_MASK = '%s'.self::TXN_ID_MASK_SEPARATOR.'%s'.self::TXN_ID_MASK_SEPARATOR.'%s';
-    protected Operation $_operationHelper;
+    protected Operation $operationHelper;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -23,17 +24,17 @@ abstract class AbstractTransactionAdditionalInfoHandler extends AbstractHandler
         Operation $operationHelper
     ) {
         parent::__construct($serializer, $responseConverter);
-        $this->_operationHelper = $operationHelper;
+        $this->operationHelper = $operationHelper;
     }
 
     /**
      * @param OperationModelInterface $operation
      */
-    public function _setTransactionAdditionalInfoFromOperation(DataObject $operation, OrderPayment $payment): void
+    public function setTransactionAdditionalInfoFromOperation(DataObject $operation, OrderPayment $payment): void
     {
         $rawDetails = (array) $payment->getAdditionalInformation();
         $rawDetails['Acquirer'] = $operation->getAcquirer();
-        $rawDetails['Acquirer Status'] = $this->concatenateStatusMsgString($operation,true);
+        $rawDetails['Acquirer Status'] = $this->concatenateStatusMsgString($operation, true);
         $rawDetails['QP Status'] = $this->concatenateStatusMsgString($operation);
 
         $payment->setTransactionAdditionalInfo(PaymentTransactionModel::RAW_DETAILS, $rawDetails);

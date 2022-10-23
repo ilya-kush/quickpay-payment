@@ -17,30 +17,30 @@ abstract class AbstractClient implements ClientInterface
 {
     public const SYNCHRONIZED_QUERY = '?synchronized';
 
-    protected Data $_helper;
-    protected Logger $_logger;
+    protected Data $helper;
+    protected Logger $logger;
 
     public function __construct(
         Data            $helper,
         Logger          $logger
     ) {
-        $this->_logger = $logger;
-        $this->_helper = $helper;
+        $this->logger = $logger;
+        $this->helper = $helper;
     }
 
-	public function placeRequest(TransferInterface $transferObject)
+    public function placeRequest(TransferInterface $transferObject)
     {
         $parameters = $transferObject->getBody();
         $response   = [];
         try {
-            $clientResponse = $this->_doRequest($parameters);
+            $clientResponse = $this->doRequest($parameters);
             $message = sprintf("Http status - %s", $clientResponse->httpStatus());
             $response = $clientResponse->asArray();
         } catch (\Exception $e) {
             $message = __($e->getMessage() ?: 'Sorry, but something went wrong');
             throw new ClientException($message);
-        } finally{
-            $this->_logger->debug(
+        } finally {
+            $this->logger->debug(
                 [
                     'class'    => get_class($this),
                     'message'  => $message,
@@ -50,22 +50,22 @@ abstract class AbstractClient implements ClientInterface
             );
         }
         return $response;
-	}
+    }
 
-    abstract protected function _doRequest(array $parameters): Response;
+    abstract protected function doRequest(array $parameters): Response;
 
-    protected function _getGatewayClient($storeId = null, string $callbackUrl = null): GatewayClientClass
+    protected function getGatewayClient($storeId = null, string $callbackUrl = null): GatewayClientClass
     {
-        $api_key = $this->_helper->getApiKey($storeId);
+        $api_key = $this->helper->getApiKey($storeId);
         $additional_headers = [];
         if ($callbackUrl) {
             $additional_headers[] = sprintf("QuickPay-Callback-Url: %s", $callbackUrl);
         }
-        $client  = new GatewayClientClass(":{$api_key}",$additional_headers);
+        $client  = new GatewayClientClass(":{$api_key}", $additional_headers);
         return $client;
     }
 
-    protected function _isSynchronizedQuery(array $parameters): bool
+    protected function isSynchronizedQuery(array $parameters): bool
     {
         if (isset($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE])) {
             if ($parameters[SynchronizedSpecification::SYNCHRONIZED_METHOD_FLAG_CODE]) {

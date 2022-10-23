@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Request;
+
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ResourceInterface;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -15,8 +16,8 @@ use Zend_Locale;
 
 class Initialization extends AbstractRequest
 {
-    protected ResourceInterface $_moduleResource;
-    protected ProductMetadataInterface $_productMetadata;
+    protected ResourceInterface $moduleResource;
+    protected ProductMetadataInterface $productMetadata;
 
     public function __construct(
         SerializerInterface                             $serializer,
@@ -26,12 +27,12 @@ class Initialization extends AbstractRequest
         ProductMetadataInterface $productMetadata,
         ResourceInterface     $moduleResource
     ) {
-        parent::__construct($serializer, $helper, $amountConverter,$logger);
-        $this->_moduleResource  = $moduleResource;
-        $this->_productMetadata = $productMetadata;
+        parent::__construct($serializer, $helper, $amountConverter, $logger);
+        $this->moduleResource  = $moduleResource;
+        $this->productMetadata = $productMetadata;
     }
 
-	public function build(array $buildSubject): array
+    public function build(array $buildSubject): array
     {
         if (!isset($buildSubject['payment'])
             || !$buildSubject['payment'] instanceof PaymentDataObjectInterface
@@ -54,8 +55,8 @@ class Initialization extends AbstractRequest
         ];
 
         /** Additional fields */
-        $paymentParameters["test_mode"] = $this->_helper->isTestMode($storeId);
-        if ($textOnStatement = $this->_helper->getTextOnStatement($storeId)) {
+        $paymentParameters["test_mode"] = $this->helper->isTestMode($storeId);
+        if ($textOnStatement = $this->helper->getTextOnStatement($storeId)) {
             $paymentParameters['text_on_statement'] = $textOnStatement;
         }
 
@@ -63,11 +64,17 @@ class Initialization extends AbstractRequest
         if ($shippingAddress) {
             $paymentParameters['shipping_address'] = [];
             $paymentParameters['shipping_address']['name'] =
-                trim(sprintf("%s %s",
-                    $shippingAddress->getFirstname(), $shippingAddress->getLastname()));
+                trim(sprintf(
+                    "%s %s",
+                    $shippingAddress->getFirstname(),
+                    $shippingAddress->getLastname()
+                ));
             $paymentParameters['shipping_address']['street'] =
-                trim(sprintf("%s %s",
-                    $shippingAddress->getStreetLine1(), $shippingAddress->getStreetLine2()));
+                trim(sprintf(
+                    "%s %s",
+                    $shippingAddress->getStreetLine1(),
+                    $shippingAddress->getStreetLine2()
+                ));
             $paymentParameters['shipping_address']['city'] = $shippingAddress->getCity();
             $paymentParameters['shipping_address']['zip_code'] = $shippingAddress->getPostcode();
             $paymentParameters['shipping_address']['region'] = $shippingAddress->getRegionCode();
@@ -83,11 +90,17 @@ class Initialization extends AbstractRequest
         $billingAddress = $order->getBillingAddress();
         $paymentParameters['invoice_address'] = [];
         $paymentParameters['invoice_address']['name'] =
-            trim(sprintf("%s %s",
-                $billingAddress->getFirstname(), $billingAddress->getLastname()));
+            trim(sprintf(
+                "%s %s",
+                $billingAddress->getFirstname(),
+                $billingAddress->getLastname()
+            ));
         $paymentParameters['invoice_address']['street'] =
-            trim(sprintf("%s %s",
-                $billingAddress->getStreetLine1(), $billingAddress->getStreetLine2()));
+            trim(sprintf(
+                "%s %s",
+                $billingAddress->getStreetLine1(),
+                $billingAddress->getStreetLine2()
+            ));
         $paymentParameters['invoice_address']['city'] = $billingAddress->getCity();
         $paymentParameters['invoice_address']['zip_code'] = $billingAddress->getPostcode();
         $paymentParameters['invoice_address']['region'] = $billingAddress->getRegionCode();
@@ -108,16 +121,16 @@ class Initialization extends AbstractRequest
                     'qty'       => (int)$item->getQtyOrdered(),
                     'item_no'   => $item->getSku(),
                     'item_name' => $item->getName(),
-                    'item_price'=> $this->_amountConverter->convert($item->getPriceInclTax()),
+                    'item_price'=> $this->amountConverter->convert($item->getPriceInclTax()),
                     'vat_rate'  =>
-                        $item->getTaxPercent() ? $this->_amountConverter->backConvert($item->getTaxPercent()) : 0
+                        $item->getTaxPercent() ? $this->amountConverter->backConvert($item->getTaxPercent()) : 0
                 ];
             }
         }
 
         /** todo: look for a way to add shipping information */
         $paymentParameters['shipping'] = [
-            'amount'   => $this->_amountConverter->convert($payment->getShippingAmount()),
+            'amount'   => $this->amountConverter->convert($payment->getShippingAmount()),
             //'method'   => $order->getShippingMethod(true)->getMethod(),
             //'company'  => $order->getShippingMethod(true)->getCarrierCode(),
             //'vat_rate' => ($order->getShippingTaxAmount() * 100) / $order->getShippingInclTax()
@@ -127,16 +140,16 @@ class Initialization extends AbstractRequest
         $paymentParameters['shopsystem'] = [];
         $paymentParameters['shopsystem']['name'] = sprintf(
             '%s %s %s (%s)',
-            $this->_productMetadata->getName(),
-            $this->_productMetadata->getVersion(),
-            $this->_productMetadata->getEdition(),
-            $this->_helper->getModuleName()
+            $this->productMetadata->getName(),
+            $this->productMetadata->getVersion(),
+            $this->productMetadata->getEdition(),
+            $this->helper->getModuleName()
         );
         $paymentParameters['shopsystem']['version'] =
-            $this->_moduleResource->getDbVersion($this->_helper->getModuleName());
+            $this->moduleResource->getDbVersion($this->helper->getModuleName());
 
         return [
             'payment' => $paymentParameters
         ];
-	}
+    }
 }

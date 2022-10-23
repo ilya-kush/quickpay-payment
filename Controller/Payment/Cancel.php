@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Controller\Payment;
+
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
@@ -16,13 +17,13 @@ use HW\QuickPay\Helper\Data;
 
 class Cancel implements HttpGetActionInterface
 {
-    protected CheckoutSession $_checkoutSession;
-    protected MessageManagerInterface $_messageManager;
-    protected ResultFactory $_resultFactory;
-    protected Data $_helper;
-    protected RequestInterface $_request;
-    protected OrderFactory $_orderFactory;
-    protected OrderService $_orderService;
+    protected CheckoutSession $checkoutSession;
+    protected MessageManagerInterface $messageManager;
+    protected ResultFactory $resultFactory;
+    protected Data $helper;
+    protected RequestInterface $request;
+    protected OrderFactory $orderFactory;
+    protected OrderService $orderService;
 
     public function __construct(
         RequestInterface        $request,
@@ -33,55 +34,54 @@ class Cancel implements HttpGetActionInterface
         OrderFactory            $orderFactory,
         OrderService            $orderService
     ) {
-        $this->_checkoutSession = $session;
-        $this->_messageManager  = $messageManager;
-        $this->_resultFactory = $resultFactory;
-        $this->_helper = $helper;
-        $this->_request = $request;
-        $this->_orderFactory = $orderFactory;
-        $this->_orderService = $orderService;
+        $this->checkoutSession = $session;
+        $this->messageManager  = $messageManager;
+        $this->resultFactory  = $resultFactory;
+        $this->helper = $helper;
+        $this->request = $request;
+        $this->orderFactory = $orderFactory;
+        $this->orderService = $orderService;
     }
 
-	public function execute(): Redirect
+    public function execute(): Redirect
     {
-        $this->_processPaymentCancelation();
-        return $this->_redirectToCheckout();
-	}
+        $this->processPaymentCancelation();
+        return $this->redirectToCheckout();
+    }
 
-    protected function _processPaymentCancelation(): void
+    protected function processPaymentCancelation(): void
     {
-        if ($this->_request->getParam('order')) {
-            $orderIncrementId = $this->_request->getParam('order');
+        if ($this->request->getParam('order')) {
+            $orderIncrementId = $this->request->getParam('order');
         } else {
             /** This part to support payment links created in old version on module*/
-            $orderIncrementId = $this->_checkoutSession->getLastRealOrderId();
+            $orderIncrementId = $this->checkoutSession->getLastRealOrderId();
         }
 
         /** @var Order $order */
-        $order = $this->_orderFactory->create()->loadByIncrementId($orderIncrementId);
-        if($order->getId()) {
-            $this->_orderService->cancel($order->getId());
-            if($orderIncrementId == $this->_checkoutSession->getLastRealOrderId()) {
-                $this->_checkoutSession->restoreQuote();
+        $order = $this->orderFactory->create()->loadByIncrementId($orderIncrementId);
+        if ($order->getId()) {
+            $this->orderService->cancel($order->getId());
+            if ($orderIncrementId == $this->checkoutSession->getLastRealOrderId()) {
+                $this->checkoutSession->restoreQuote();
             } else {
-                $this->_messageManager->addSuccessMessage(__('Your order has been canceled.'));
+                $this->messageManager->addSuccessMessage(__('Your order has been canceled.'));
             }
             return;
         }
-        $this->_messageManager->addErrorMessage(sprintf(
+        $this->messageManager->addErrorMessage(sprintf(
             "%s: %s",
             $orderIncrementId,
             __("The entity that was requested doesn't exist. Verify the entity and try again.")
-            )
-        );
+        ));
     }
 
-    protected function _redirectToCheckout(): Redirect
+    protected function redirectToCheckout(): Redirect
     {
         $params = ['_fragment' => 'payment'];
-        if(!$this->_helper->isOneStepCheckout()) {
+        if (!$this->helper->isOneStepCheckout()) {
             $params = [];
         }
-        return $this->_resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath('checkout',$params);
+        return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath('checkout', $params);
     }
 }

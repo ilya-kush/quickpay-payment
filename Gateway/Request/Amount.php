@@ -6,7 +6,7 @@ namespace HW\QuickPay\Gateway\Request;
 
 class Amount extends AbstractRequest
 {
-	public function build(array $buildSubject): array
+    public function build(array $buildSubject): array
     {
         if (!isset($buildSubject['amount'])
             || ($buildSubject['amount'] <= 0)
@@ -16,7 +16,7 @@ class Amount extends AbstractRequest
 
         $amount = $buildSubject['amount'];
         return [
-            'amount' => $this->_amountConverter->convert($amount)
+            'amount' => $this->amountConverter->convert($amount)
         ];
-	}
+    }
 }

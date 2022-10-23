@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Config;
+
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -31,10 +32,10 @@ class General implements ConfigInterface
         'paymentInfoKeys'
     ];
 
-    protected ScopeConfigInterface $_scopeConfig;
+    protected ScopeConfigInterface $scopeConfig;
     protected ?string $methodCode;
     protected ?string $pathPattern;
-    protected Data $_helper;
+    protected Data $helper;
 
     public function __construct(
         Data                 $helper,
@@ -42,10 +43,10 @@ class General implements ConfigInterface
         string               $methodCode = null,
         string               $pathPattern = self::DEFAULT_PATH_PATTERN
     ) {
-        $this->_scopeConfig = $scopeConfig;
-        $this->methodCode   = $methodCode;
+        $this->scopeConfig = $scopeConfig;
+        $this->methodCode  = $methodCode;
         $this->pathPattern = $pathPattern;
-        $this->_helper = $helper;
+        $this->helper = $helper;
     }
 
     /**
@@ -55,7 +56,7 @@ class General implements ConfigInterface
      */
     public function getValue($field, $storeId = null)
     {
-        if (in_array($field,self::IN_COMMON_FIELDS)) {
+        if (in_array($field, self::IN_COMMON_FIELDS)) {
             $methodCode = DATA::GENERAL_SETTINGS_CODE;
         } else {
             $methodCode = $this->methodCode;
@@ -65,7 +66,7 @@ class General implements ConfigInterface
             return null;
         }
 
-        return $this->_scopeConfig->getValue(
+        return $this->scopeConfig->getValue(
             sprintf($this->pathPattern, $methodCode, $field),
             ScopeInterface::SCOPE_STORE,
             $storeId
@@ -85,11 +86,12 @@ class General implements ConfigInterface
     /**
      * @param string   $path
      * @param int|null $storeId
+     *
      * @return mixed
      */
-    public function getConfigValue($path, $storeId = null)
+    public function getConfigValue(string $path, int $storeId = null)
     {
-        return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE,$storeId);
+        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -97,7 +99,7 @@ class General implements ConfigInterface
      */
     public function isTestMode($storeId = null): bool
     {
-        return $this->_helper->isTestMode($storeId);
+        return $this->helper->isTestMode($storeId);
     }
 
     /**
@@ -105,7 +107,7 @@ class General implements ConfigInterface
      */
     public function getTextOnStatement($storeId = null): string
     {
-        return $this->_helper->getTextOnStatement($storeId);
+        return $this->helper->getTextOnStatement($storeId);
     }
 
     /**
@@ -113,14 +115,14 @@ class General implements ConfigInterface
      */
     public function getApiKey($storeId = null): string
     {
-        return $this->_helper->getApiKey($storeId);
+        return $this->helper->getApiKey($storeId);
     }
     /**
      * @param null|int|string $storeId
      */
     public function getPrivateKey($storeId = null): string
     {
-        return $this->_helper->getPrivateKey($storeId);
+        return $this->helper->getPrivateKey($storeId);
     }
 
     /**
@@ -128,7 +130,7 @@ class General implements ConfigInterface
      */
     public function getDefaultLocale($storeId = null): string
     {
-        return $this->_helper->getDefaultLocale($storeId);
+        return $this->helper->getDefaultLocale($storeId);
     }
 
     /**
@@ -136,7 +138,7 @@ class General implements ConfigInterface
      */
     public function getBrandingId($storeId = null): string
     {
-        return $this->_helper->getBrandingId($storeId);
+        return $this->helper->getBrandingId($storeId);
     }
 
     /**
@@ -144,7 +146,7 @@ class General implements ConfigInterface
      */
     public function captureTransactionFee($storeId = null): bool
     {
-        return $this->_helper->captureTransactionFee($storeId);
+        return $this->helper->captureTransactionFee($storeId);
     }
 
     /**
@@ -152,7 +154,7 @@ class General implements ConfigInterface
      */
     public function isAutoCaptureMode($storeId = null): bool
     {
-        return $this->_helper->isAutoCaptureMode($storeId);
+        return $this->helper->isAutoCaptureMode($storeId);
     }
 
     /**
@@ -160,21 +162,21 @@ class General implements ConfigInterface
      */
     public function ifSendOrderConformationEmailByDefaultMagentoLogic($storeId = null): bool
     {
-        return $this->_helper->ifSendOrderConformationEmailByDefaultMagentoLogic($storeId);
+        return $this->helper->ifSendOrderConformationEmailByDefaultMagentoLogic($storeId);
     }
 
     public function getCallbackUrl(array $params = []): string
     {
-        return $this->_helper->getCallbackUrl($params);
+        return $this->helper->getCallbackUrl($params);
     }
 
     public function getCancelUrl(array $params = []): string
     {
-        return $this->_helper->getCancelUrl($params);
+        return $this->helper->getCancelUrl($params);
     }
 
     public function getContinueUrl(array $params = []): string
     {
-        return $this->_helper->getContinueUrl($params);
+        return $this->helper->getContinueUrl($params);
     }
 }

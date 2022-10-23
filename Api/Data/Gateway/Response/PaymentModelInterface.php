@@ -3,10 +3,12 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
+
 /**
  * @see https://learn.quickpay.net/tech-talk/api/services/#POST-payments---format-
  */
-interface PaymentModelInterface {
+interface PaymentModelInterface
+{
 
     public const MODEL_TYPE_PAYMENT = 'Payment';
 
@@ -72,7 +74,7 @@ interface PaymentModelInterface {
     public function getLink();
 
     /**
-     * Timestamp of creation	ISO-8601
+     * Timestamp of creation    ISO-8601
      * @return string
      */
     public function getCreatedAt();
@@ -84,13 +86,13 @@ interface PaymentModelInterface {
     public function getUpdatedAt();
 
     /**
-     * Timestamp of retention	ISO-8601
+     * Timestamp of retention   ISO-8601
      * @return string
      */
     public function getRetentedAt();
 
     /**
-     * Authorize deadline	ISO-8601
+     * Authorize deadline   ISO-8601
      * @return string
      */
     public function getDeadlineAt();
@@ -148,5 +150,4 @@ interface PaymentModelInterface {
      * @return ShippingModelInterface
      */
     public function getShipping();
-
 }

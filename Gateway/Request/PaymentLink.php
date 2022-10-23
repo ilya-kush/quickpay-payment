@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Request;
+
 use HW\QuickPay\Gateway\Helper\AmountConverter;
 use HW\QuickPay\Helper\Data;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -12,9 +13,10 @@ use Magento\Payment\Model\Method\Logger;
 use Magento\Store\Api\StoreManagementInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
-class PaymentLink extends AbstractRequest {
+class PaymentLink extends AbstractRequest
+{
 
-    protected StoreManagerInterface $_storeManager;
+    protected StoreManagerInterface $storeManager;
 
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -24,7 +26,7 @@ class PaymentLink extends AbstractRequest {
         Logger $logger
     ) {
         parent::__construct($serializer, $helper, $amountConverter, $logger);
-        $this->_storeManager    = $storeManager;
+        $this->storeManager = $storeManager;
     }
 
     public function build(array $buildSubject): array
@@ -42,38 +44,38 @@ class PaymentLink extends AbstractRequest {
         $order   = $paymentDO->getOrder();
         $payment = $paymentDO->getPayment();
         $storeId = $order->getStoreId();
-        $storeCode = $this->_storeManager->getStore($storeId)->getCode();
+        $storeCode = $this->storeManager->getStore($storeId)->getCode();
         $billingAddress = $order->getBillingAddress();
         $parametersPaymentLink = [
-            "amount"          => $this->_amountConverter->convert($order->getGrandTotalAmount()),
+            "amount"          => $this->amountConverter->convert($order->getGrandTotalAmount()),
             "continue_url"    =>
-                $this->_helper->getContinueUrl(['order' => $order->getOrderIncrementId()],$storeCode),
+                $this->helper->getContinueUrl(['order' => $order->getOrderIncrementId()], $storeCode),
             "cancel_url"      =>
-                $this->_helper->getCancelUrl(['order' => $order->getOrderIncrementId()],$storeCode),
-            "callback_url"    => $this->_helper->getCallbackUrl([],$storeCode),
+                $this->helper->getCancelUrl(['order' => $order->getOrderIncrementId()], $storeCode),
+            "callback_url"    => $this->helper->getCallbackUrl([], $storeCode),
             "customer_email"  => $billingAddress->getEmail(),
-            "auto_capture"    => $this->_helper->isAutoCaptureMode($storeId),
+            "auto_capture"    => $this->helper->isAutoCaptureMode($storeId),
             /** todo: manage it depends on Acquirer */
             "payment_methods" =>
-                $this->_helper->getAllowedMethodsOfGateway($storeId,$payment->getMethod()),
-            "branding_id"     => $this->_helper->getBrandingId($storeId),
-            "language"        => $this->_getLanguage($storeId),
-            "auto_fee"        => $this->_helper->captureTransactionFee($storeId),
-            "test_mode"       => $this->_helper->isTestMode($storeId)
+                $this->helper->getAllowedMethodsOfGateway($storeId, $payment->getMethod()),
+            "branding_id"     => $this->helper->getBrandingId($storeId),
+            "language"        => $this->getLanguage($storeId),
+            "auto_fee"        => $this->helper->captureTransactionFee($storeId),
+            "test_mode"       => $this->helper->isTestMode($storeId)
         ];
 
         return [
             'payment_link' => $parametersPaymentLink
         ];
-	}
+    }
 
     /**
      * We use it only because we need to map both norwegian locales to no
      * @param null|int|string $storeId
      */
-    protected function _getLanguage($storeId = null): string
+    protected function getLanguage($storeId = null): string
     {
-        $locale = $this->_helper->getDefaultLocale($storeId);
+        $locale = $this->helper->getDefaultLocale($storeId);
         //
         $map = [
             'nb' => 'no',

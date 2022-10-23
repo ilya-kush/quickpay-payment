@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Controller\Payment;
+
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\Redirect as ResultRedirect;
@@ -15,13 +16,13 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderRepository;
 use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
-class Redirect  implements HttpGetActionInterface
+class Redirect implements HttpGetActionInterface
 {
-    protected CheckoutSession $_checkoutSession;
-    protected MessageManagerInterface $_messageManager;
-    protected ResultFactory $_resultFactory;
-    protected SerializerInterface $_serializer;
-    protected OrderRepository $_orderRepository;
+    protected CheckoutSession $checkoutSession;
+    protected MessageManagerInterface $messageManager;
+    protected ResultFactory $resultFactory;
+    protected SerializerInterface $serializer;
+    protected OrderRepository $orderRepository;
 
     public function __construct(
         ResultFactory                     $resultFactory,
@@ -30,39 +31,39 @@ class Redirect  implements HttpGetActionInterface
         OrderRepository $orderRepository,
         SerializerInterface $serializer
     ) {
-        $this->_checkoutSession = $session;
-        $this->_messageManager  = $messageManager;
-        $this->_resultFactory = $resultFactory;
-        $this->_serializer = $serializer;
-        $this->_orderRepository = $orderRepository;
+        $this->checkoutSession = $session;
+        $this->messageManager  = $messageManager;
+        $this->resultFactory  = $resultFactory;
+        $this->serializer = $serializer;
+        $this->orderRepository = $orderRepository;
     }
 
-	public function execute(): ResultRedirect
+    public function execute(): ResultRedirect
     {
         try {
             $order = $this->getOrder();
             $payment = $order->getPayment();
             $additional = $payment->getAdditionalData();
             if ($additional) {
-                $additionalData = $this->_serializer->unserialize($additional);
+                $additionalData = $this->serializer->unserialize($additional);
                 if (isset($additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE])) {
                     $quickPayLink = $additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE];
-                    return $this->_resultFactory->create(ResultFactory::TYPE_REDIRECT)->setUrl($quickPayLink);
+                    return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)->setUrl($quickPayLink);
                 } else {
-                    $this->_messageManager->addErrorMessage(__('Payment link is not set.'));
+                    $this->messageManager->addErrorMessage(__('Payment link is not set.'));
                 }
             } else {
-                $this->_messageManager->addErrorMessage(__('Payment link is not set.'));
+                $this->messageManager->addErrorMessage(__('Payment link is not set.'));
             }
         } catch (NoSuchEntityException $e) {
-            $this->_messageManager->addErrorMessage($e->getMessage());
-            $this->_checkoutSession->restoreQuote();
+            $this->messageManager->addErrorMessage($e->getMessage());
+            $this->checkoutSession->restoreQuote();
         } catch (\Exception $e) {
-            $this->_messageManager->addErrorMessage(__('Something went wrong, please try again later'));
-            $this->_checkoutSession->restoreQuote();
+            $this->messageManager->addErrorMessage(__('Something went wrong, please try again later'));
+            $this->checkoutSession->restoreQuote();
         }
-        return $this->_resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath('checkout/cart');
-	}
+        return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath('checkout/cart');
+    }
 
     /**
      * @throws NoSuchEntityException
@@ -70,7 +71,7 @@ class Redirect  implements HttpGetActionInterface
      */
     public function getOrder(): Order
     {
-        $orderId = $this->_checkoutSession->getLastOrderId();
-        return $this->_orderRepository->get($orderId);
+        $orderId = $this->checkoutSession->getLastOrderId();
+        return $this->orderRepository->get($orderId);
     }
 }

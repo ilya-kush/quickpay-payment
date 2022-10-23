@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Validator;
+
 use Magento\Framework\DataObject;
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterface;
@@ -13,8 +14,8 @@ use HW\QuickPay\Gateway\Helper\ResponseConverter;
 
 abstract class AbstractOperationValidator extends AbstractValidator
 {
-    protected ResponseConverter $_responseConverter;
-    protected Operation $_operationHelper;
+    protected ResponseConverter $responseConverter;
+    protected Operation $operationHelper;
 
     public function __construct(
         ResultInterfaceFactory $resultFactory,
@@ -22,8 +23,8 @@ abstract class AbstractOperationValidator extends AbstractValidator
         Operation $operationHelper
     ) {
         parent::__construct($resultFactory);
-        $this->_responseConverter = $responseConverter;
-        $this->_operationHelper   = $operationHelper;
+        $this->responseConverter = $responseConverter;
+        $this->operationHelper   = $operationHelper;
     }
 
     public function validate(array $validationSubject)
@@ -32,18 +33,18 @@ abstract class AbstractOperationValidator extends AbstractValidator
             throw new \InvalidArgumentException('Response does not exist');
         }
 
-        $responsePayment = $this->_responseConverter->convertArrayToObject($validationSubject['response']);
+        $responsePayment = $this->responseConverter->convertArrayToObject($validationSubject['response']);
 
-        $statusMsg = $this->_getDefaultErrorMsg();
+        $statusMsg = $this->getDefaultErrorMsg();
         $statusCode = '';
         if (is_array($responsePayment->getOperations())) {
             foreach ($responsePayment->getOperations() as $operation) {
                 /** Process capture operation */
-                if ($this->_checkOperationCondition($operation,$validationSubject)) {
+                if ($this->checkOperationCondition($operation, $validationSubject)) {
                     $statusCode = $operation->getQpStatusCode();
                     $statusMsg = $operation->getQpStatusMsg();
                     $statusMsg = sprintf("%s (%s)", $statusMsg, $statusCode);
-                    if ($this->_operationHelper->isStatusCodeApproved($operation)) {
+                    if ($this->operationHelper->isStatusCodeApproved($operation)) {
                         return $this->createResult(
                             true,
                             []
@@ -59,7 +60,7 @@ abstract class AbstractOperationValidator extends AbstractValidator
         );
     }
 
-    protected function _getDefaultErrorMsg(): string
+    protected function getDefaultErrorMsg(): string
     {
         return '';
     }
@@ -67,5 +68,5 @@ abstract class AbstractOperationValidator extends AbstractValidator
     /**
      * @param OperationModelInterface $operation
      */
-    abstract protected function _checkOperationCondition(DataObject $operation, array $validationSubject): bool;
+    abstract protected function checkOperationCondition(DataObject $operation, array $validationSubject): bool;
 }

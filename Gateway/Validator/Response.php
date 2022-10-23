@@ -3,12 +3,14 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Validator;
+
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Magento\Payment\Gateway\Validator\ResultInterfaceFactory;
 
-class Response extends AbstractValidator {
+class Response extends AbstractValidator
+{
 
-	public function validate(array $validationSubject)
+    public function validate(array $validationSubject)
     {
         if (!isset($validationSubject['response']) || !is_array($validationSubject['response'])) {
             throw new \InvalidArgumentException('Response does not exist');
@@ -28,7 +30,7 @@ class Response extends AbstractValidator {
             }
             if (isset($responseArray['errors']) && is_array($responseArray['errors'])) {
                 foreach ($responseArray['errors'] as $_field => $_validationError) {
-                    $errors[] = sprintf(' %s - %s.',$_field,  implode(',',$_validationError));
+                    $errors[] = sprintf(' %s - %s.', $_field, implode(',', $_validationError));
                 }
             }
         }
@@ -44,5 +46,5 @@ class Response extends AbstractValidator {
                 $errors
             );
         }
-	}
+    }
 }

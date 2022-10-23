@@ -8,10 +8,10 @@ class Synchronized extends Group
 {
     public const SYNCHRONIZED_METHOD_FLAG_CODE = 'synchronized_method';
 
-	public function isSatisfiedBy($paymentMethod): bool
+    public function isSatisfiedBy($paymentMethod): bool
     {
-		if (parent::isSatisfiedBy($paymentMethod)) {
-            foreach ($this->_scopeConfig->getValue('payment') as $code => $data) {
+        if (parent::isSatisfiedBy($paymentMethod)) {
+            foreach ($this->scopeConfig->getValue('payment') as $code => $data) {
                 if ($paymentMethod == $code) {
                     if (isset($data[self::SYNCHRONIZED_METHOD_FLAG_CODE])
                         && $data[self::SYNCHRONIZED_METHOD_FLAG_CODE]) {
@@ -21,5 +21,5 @@ class Synchronized extends Group
             }
         }
         return false;
-	}
+    }
 }

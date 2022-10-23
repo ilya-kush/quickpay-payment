@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Block;
+
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Template as FrontendTemplate;
@@ -13,7 +14,7 @@ use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
 class Info extends ConfigurableInfo
 {
-    protected SerializerInterface $_serializer;
+    protected SerializerInterface $serializer;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -22,7 +23,7 @@ class Info extends ConfigurableInfo
         array $data = []
     ) {
         parent::__construct($context, $config, $data);
-        $this->_serializer = $serializer;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -37,12 +38,12 @@ class Info extends ConfigurableInfo
     /**
      * @throws LocalizedException
      */
-    public function _toHtml(): string
+    protected function _toHtml(): string
     {
         /** first part of condition we use for payments made in old version of module */
         if (!$this->getInfo()->getLastTransId()
             && $this->getInfo()->getAdditionalData()) {
-            $additionalData = $this->_serializer->unserialize($this->getInfo()->getAdditionalData());
+            $additionalData = $this->serializer->unserialize($this->getInfo()->getAdditionalData());
 
             if (isset($additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE])) {
                 $blockAdditionalData = $this->getLayout()->getBlock('quickpay.payments.linkToAuthorize');
@@ -55,7 +56,8 @@ class Info extends ConfigurableInfo
                     $this->setChild('linkToAuthorize', $blockAdditionalData);
                 }
                 $blockAdditionalData->setPaymentLink(
-                    $additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE]);
+                    $additionalData[ConfigProvider::PAYMENT_ADDITIONAL_DATA_REDIRECT_URL_CODE]
+                );
             }
         }
         return parent::_toHtml();

@@ -4,7 +4,8 @@
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
 
-interface PaymentLinkModelInterface extends PaymentLinkUrlInterface {
+interface PaymentLinkModelInterface extends PaymentLinkUrlInterface
+{
     /**
      * Url to payment window for this payment link
      * @return string

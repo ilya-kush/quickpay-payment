@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
@@ -13,18 +14,18 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
 
 abstract class AbstractHandler implements HandlerInterface
 {
-    protected SerializerInterface $_serializer;
-    protected ResponseConverter $_responseConverter;
+    protected SerializerInterface $serializer;
+    protected ResponseConverter $responseConverter;
 
     public function __construct(
         SerializerInterface $serializer,
         ResponseConverter $responseConverter
     ) {
-        $this->_serializer        = $serializer;
-        $this->_responseConverter = $responseConverter;
+        $this->serializer        = $serializer;
+        $this->responseConverter = $responseConverter;
     }
 
-	public function handle(array $handlingSubject, array $response): void
+    public function handle(array $handlingSubject, array $response)
     {
         if (!isset($handlingSubject['payment'])
             || !$handlingSubject['payment'] instanceof PaymentDataObjectInterface
@@ -32,30 +33,30 @@ abstract class AbstractHandler implements HandlerInterface
             throw new \InvalidArgumentException('Payment data object should be provided');
         }
 
-        $responsePayment = $this->_responseConverter->convertArrayToObject($response);
-        $this->_processResponsePayment($responsePayment, $handlingSubject);
-	}
+        $responsePayment = $this->responseConverter->convertArrayToObject($response);
+        $this->processResponsePayment($responsePayment, $handlingSubject);
+    }
 
-    protected function _addPaymentAdditionalData(OrderPayment $payment, string $key, $value): void
+    protected function addPaymentAdditionalData(OrderPayment $payment, string $key, $value): void
     {
         $additional = $payment->getAdditionalData();
         if (!$additional) {
             $additional = [];
         } else {
-            $additional = $this->_serializer->unserialize($additional);
+            $additional = $this->serializer->unserialize($additional);
         }
         if ($value) {
             $additional[$key] = $value;
         } else {
             unset($additional[$key]);
         }
-        $payment->setAdditionalData($this->_serializer->serialize($additional));
+        $payment->setAdditionalData($this->serializer->serialize($additional));
     }
 
     /**
      * We make sure other handlers not sent pending
      */
-    protected function _checkAndSetIsTransactionPendingFalse(OrderPayment $payment): OrderPayment
+    protected function checkAndSetIsTransactionPendingFalse(OrderPayment $payment): OrderPayment
     {
         if ($payment->getIsTransactionPending() !== true) {
             $payment->setIsTransactionPending(false);
@@ -66,7 +67,7 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * We make sure other handlers not rejected approving
      */
-    protected function _checkAndSetIsTransactionApprovedTrue(OrderPayment $payment): OrderPayment
+    protected function checkAndSetIsTransactionApprovedTrue(OrderPayment $payment): OrderPayment
     {
         if ($payment->getIsTransactionApproved() !== false) {
             $payment->setIsTransactionApproved(true);
@@ -77,7 +78,7 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * We make sure other handlers not detected fraud
      */
-    protected function _checkAndSetIsFraudDetectedFalse(OrderPayment $payment): OrderPayment
+    protected function checkAndSetIsFraudDetectedFalse(OrderPayment $payment): OrderPayment
     {
         if ($payment->getIsFraudDetected() !== true) {
             $payment->setIsFraudDetected(false);
@@ -88,5 +89,5 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * @param ResponseObject $responsePayment
      */
-    abstract protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject);
+    abstract protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject);
 }

@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
 use HW\QuickPay\Api\Data\Gateway\Response\PaymentModelInterface;
@@ -10,7 +11,7 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
 
 class FraudHandler extends AbstractHandler
 {
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
     {
         if ($responsePayment->getType() != PaymentModelInterface::MODEL_TYPE_PAYMENT) {
             return;
@@ -27,37 +28,41 @@ class FraudHandler extends AbstractHandler
                 $payment->setIsTransactionPending(true);
                 $payment->setIsFraudDetected(true);
                 $payment->setIsTransactionApproved(false);
-                $payment->setAdditionalInformation('Fraud',
+                $payment->setAdditionalInformation(
+                    'Fraud',
                     $responsePayment->getMetadata()->getFraudReportDescription()
                 );
-                $payment->setAdditionalInformation('Fraud report',
-                    implode(',',$responsePayment->getMetadata()->getFraudRemarks())
+                $payment->setAdditionalInformation(
+                    'Fraud report',
+                    implode(',', $responsePayment->getMetadata()->getFraudRemarks())
                 );
             } else {
                 $order = $payment->getOrder();
                 if ($order->isPaymentReview()) {
                     /** here we make sure other handlers not sent pending  */
-                    $this->_checkAndSetIsTransactionPendingFalse($payment);
+                    $this->checkAndSetIsTransactionPendingFalse($payment);
 
                     /** here we make sure other handlers not rejected approving  */
-                    $this->_checkAndSetIsTransactionApprovedTrue($payment);
+                    $this->checkAndSetIsTransactionApprovedTrue($payment);
                     if ($order->isFraudDetected()) {
                         /** here we make sure other handlers not detected fraud  */
-                        $this->_checkAndSetIsFraudDetectedFalse($payment);
+                        $this->checkAndSetIsFraudDetectedFalse($payment);
 
                         if ($responsePayment->getMetadata()->getFraudReportDescription()) {
-                            $payment->setAdditionalInformation('Fraud',
+                            $payment->setAdditionalInformation(
+                                'Fraud',
                                 $responsePayment->getMetadata()->getFraudReportDescription()
                             );
                         }
                         if (!empty($responsePayment->getMetadata()->getFraudRemarks())) {
-                            $payment->setAdditionalInformation('Fraud report',
-                                implode(',',$responsePayment->getMetadata()->getFraudRemarks() ?: [])
+                            $payment->setAdditionalInformation(
+                                'Fraud report',
+                                implode(',', $responsePayment->getMetadata()->getFraudRemarks() ?: [])
                             );
                         }
                     }
                 }
             }
         }
-	}
+    }
 }

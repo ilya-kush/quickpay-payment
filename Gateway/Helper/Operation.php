@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Helper;
+
 use Magento\Framework\DataObject;
 use HW\QuickPay\Api\Data\Gateway\Response\OperationModelInterface;
 
@@ -19,7 +20,7 @@ class Operation
     public const QP_STATUS_CODE_GATEWAY_ERROR                  = '50000';
     public const QP_STATUS_CODE_ACQUIRER_COMMUNICATIONS_ERROR  = '50300';
 
-    protected AmountConverter $_amountConverter;
+    protected AmountConverter $amountConverter;
 
     /**
      * @see https://learn.quickpay.net/tech-talk/appendixes/errors/#errors-and-codes
@@ -39,7 +40,7 @@ class Operation
 
     public function __construct(AmountConverter $amountConverter)
     {
-        $this->_amountConverter = $amountConverter;
+        $this->amountConverter = $amountConverter;
     }
 
     /**
@@ -87,7 +88,7 @@ class Operation
      */
     public function checkOperationAmount(DataObject $operation, float $amount = null):bool
     {
-        return $amount == null || $this->_amountConverter->convert($amount) == $operation->getAmount();
+        return $amount == null || $this->amountConverter->convert($amount) == $operation->getAmount();
     }
 
     /**

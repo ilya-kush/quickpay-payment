@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response\Initialize;
+
 use HW\QuickPay\Gateway\Helper\ResponseConverter;
 use HW\QuickPay\Gateway\Response\AbstractHandler;
 use Magento\Framework\DataObject;
@@ -13,7 +14,7 @@ use Magento\Sales\Model\Order\Config as OrderConfig;
 
 class OrderState extends AbstractHandler
 {
-    protected OrderConfig $_orderConfig;
+    protected OrderConfig $orderConfig;
 
     public function __construct(
         OrderConfig         $orderConfig,
@@ -21,10 +22,10 @@ class OrderState extends AbstractHandler
         ResponseConverter   $responseConverter
     ) {
         parent::__construct($serializer, $responseConverter);
-        $this->_orderConfig = $orderConfig;
+        $this->orderConfig = $orderConfig;
     }
 
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject)
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject)
     {
         if (!isset($handlingSubject['stateObject'])
             || !$handlingSubject['stateObject'] instanceof DataObject
@@ -33,9 +34,10 @@ class OrderState extends AbstractHandler
         }
         $stateObject = $handlingSubject['stateObject'];
         $stateObject->setData('state', Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE);
-        $stateObject->setData('status',
-            $this->_orderConfig->getStateDefaultStatus(Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE)
+        $stateObject->setData(
+            'status',
+            $this->orderConfig->getStateDefaultStatus(Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE)
         );
         $stateObject->setData('is_notified', 1);
-	}
+    }
 }

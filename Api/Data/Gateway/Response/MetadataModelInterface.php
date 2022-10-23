@@ -4,7 +4,8 @@
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
 
-interface MetadataModelInterface {
+interface MetadataModelInterface
+{
 
     /**
      * Types of payment

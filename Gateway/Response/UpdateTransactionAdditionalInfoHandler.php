@@ -8,6 +8,7 @@
  * Time:    16:49
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Framework\DataObject;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Api\Data\TransactionInterface;
@@ -20,7 +21,8 @@ use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 /**
  *
  */
-class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfoHandler {
+class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAdditionalInfoHandler
+{
 
     /**
      * @param array $handlingSubject
@@ -36,15 +38,15 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
             throw new \InvalidArgumentException('Payment data object should be provided');
         }
 
-        $responsePayment = $this->_responseConverter->convertArrayToObject($response);
-        return $this->_processResponsePayment($responsePayment, $handlingSubject);
+        $responsePayment = $this->responseConverter->convertArrayToObject($response);
+        return $this->processResponsePayment($responsePayment, $handlingSubject);
     }
 
     /**
      * @param ResponseObject $responsePayment
      * @return array|void
      */
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject)
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject)
     {
         if (!isset($handlingSubject['transactionId'])) {
             return ;
@@ -52,16 +54,17 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
 
         if ($responsePayment->getOperations()) {
             foreach ($responsePayment->getOperations() as $operation) {
-                if ($this->_checkOperationIdAndType(
+                if ($this->checkOperationIdAndType(
                     $operation,
-                    $handlingSubject['transactionId'])
+                    $handlingSubject['transactionId']
+                )
                 ) {
                     /** @var PaymentDataObjectInterface $paymentDO */
                     $paymentDO = $handlingSubject['payment'];
                     /** @var $payment OrderPayment */
                     $payment = $paymentDO->getPayment();
 
-                    if (!$this->_operationHelper->isStatusCodeApproved($operation)) {
+                    if (!$this->operationHelper->isStatusCodeApproved($operation)) {
                         $payment->setIsTransactionPending(true);
                         $payment->setIsTransactionApproved(false);
                         $payment->addTransactionCommentsToOrder(
@@ -72,27 +75,27 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
                         $order = $payment->getOrder();
                         if ($order->isPaymentReview()) {
                             /** here we make sure other handlers not sent pending  */
-                            $this->_checkAndSetIsTransactionPendingFalse($payment);
+                            $this->checkAndSetIsTransactionPendingFalse($payment);
 
                             /** here we make sure other handlers not rejected approving  */
-                            $this->_checkAndSetIsTransactionApprovedTrue($payment);
+                            $this->checkAndSetIsTransactionApprovedTrue($payment);
                         }
                     }
 
-                    $this->_setTransactionAdditionalInfoFromOperation($operation,$payment);
+                    $this->setTransactionAdditionalInfoFromOperation($operation, $payment);
                     return $payment->getTransactionAdditionalInfo()[PaymentTransactionModel::RAW_DETAILS] ?? void;
                 }
             }
         }
-	}
+    }
 
     /**
      * It parses according self::TXN_ID_MASK
      * @return string[]
      */
-    protected function _parseHandlingTransactionId(string $handlingTransactionId): array
+    protected function parseHandlingTransactionId(string $handlingTransactionId): array
     {
-        $parsedArray = explode(self::TXN_ID_MASK_SEPARATOR,$handlingTransactionId);
+        $parsedArray = explode(self::TXN_ID_MASK_SEPARATOR, $handlingTransactionId);
 
         $result[ConfigProvider::PAYMENT_ADDITIONAL_DATA_GATEWAY_TRANS_ID_CODE] = $parsedArray[0] ?? '';
         $result['operation_type'] = $parsedArray[1] ?? '';
@@ -104,11 +107,12 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
     /**
      * @param OperationModelInterface $operation
      */
-    protected function _checkOperationIdAndType(DataObject $operation, string $handlingTransactionId): bool
+    protected function checkOperationIdAndType(DataObject $operation, string $handlingTransactionId): bool
     {
-        $parsedRequestedTransactionId = $this->_parseHandlingTransactionId($handlingTransactionId);
+        $parsedRequestedTransactionId = $this->parseHandlingTransactionId($handlingTransactionId);
 
-        if (in_array($operation->getType(),
+        if (in_array(
+            $operation->getType(),
             [
                 OperationModelInterface::OPERATION_TYPE_AUTHORIZE,
                 OperationModelInterface::OPERATION_TYPE_RECURRING
@@ -120,7 +124,7 @@ class UpdateTransactionAdditionalInfoHandler extends AbstractTransactionAddition
             return ($parsedRequestedTransactionId['operation_id'] == '')
                 && ($parsedRequestedTransactionId['operation_type'] == '')
                 && $parsedRequestedTransactionId[ConfigProvider::PAYMENT_ADDITIONAL_DATA_GATEWAY_TRANS_ID_CODE]
-                && $this->_operationHelper->isStatusCodeApproved($operation);
+                && $this->operationHelper->isStatusCodeApproved($operation);
         }
 
         /** Here we process transaction that got id by default magento logic. void instead of cancel-%operation_id% */

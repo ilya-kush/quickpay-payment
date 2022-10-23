@@ -3,10 +3,12 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
+
 /**
  *
  */
-interface ShippingModelInterface {
+interface ShippingModelInterface
+{
     /**
      * Delivery price
      * @return int

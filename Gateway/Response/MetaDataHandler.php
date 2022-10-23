@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Response;
+
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Model\Order\Payment as OrderPayment;
 use HW\QuickPay\Api\Data\Gateway\Response\MetadataModelInterface;
@@ -11,7 +12,7 @@ use HW\QuickPay\Gateway\Helper\ResponseObject;
 
 class MetaDataHandler extends AbstractHandler
 {
-	protected function _processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
+    protected function processResponsePayment(ResponseObject $responsePayment, array $handlingSubject): void
     {
         if ($responsePayment->getType() != PaymentModelInterface::MODEL_TYPE_PAYMENT) {
             return;
@@ -42,8 +43,8 @@ class MetaDataHandler extends AbstractHandler
                                 strtotime(sprintf(
                                     "%s-%s",
                                     $responsePayment->getMetadata()->getExpYear(),
-                                    $responsePayment->getMetadata()->getExpMonth())
-                                )
+                                    $responsePayment->getMetadata()->getExpMonth()
+                                ))
                             )
                         );
                     }
@@ -53,21 +54,28 @@ class MetaDataHandler extends AbstractHandler
                     );
                     $payment->setCcTransId($responsePayment->getId());
                     $payment->setAdditionalInformation('Card Type', $responsePayment->getMetadata()->getBrand());
-                    $payment->setAdditionalInformation('Card Number',
+                    $payment->setAdditionalInformation(
+                        'Card Number',
                         sprintf("XXXX-%s", $responsePayment->getMetadata()->getLast4())
                     );
                     if ($responsePayment->getMetadata()->getIssuedTo()) {
                         $payment->setCcOwner($responsePayment->getMetadata()->getIssuedTo());
-                        $payment->setAdditionalInformation('Card Owner', $responsePayment->getMetadata()->getIssuedTo());
+                        $payment->setAdditionalInformation(
+                            'Card Owner',
+                            $responsePayment->getMetadata()->getIssuedTo()
+                        );
                     }
                 } elseif ($responsePayment->getMetadata()->getType() == MetadataModelInterface::TYPE_MOBILE) {
                     $payment->setAdditionalInformation('Phone number', $responsePayment->getMetadata()->getNumber());
                 } elseif ($responsePayment->getMetadata()->getType() == MetadataModelInterface::TYPE_NIN) {
                     $payment->setAdditionalInformation('Nin number', $responsePayment->getMetadata()->getNinNumber());
-                    $payment->setAdditionalInformation('Nin country', $responsePayment->getMetadata()->getNinCountryCode());
+                    $payment->setAdditionalInformation(
+                        'Nin country',
+                        $responsePayment->getMetadata()->getNinCountryCode()
+                    );
                     $payment->setAdditionalInformation('Nin gender', $responsePayment->getMetadata()->getNinGender());
                 }
             }
         }
-	}
+    }
 }

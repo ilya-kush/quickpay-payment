@@ -3,12 +3,14 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Helper;
+
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\ScopeInterface as StoreScopeInterface;
 use HW\QuickPay\Model\Ui\Checkout\ConfigProvider;
 
-class Data extends AbstractHelper {
+class Data extends AbstractHelper
+{
 
     public const INITIALIZED_PAYMENT_ORDER_STATE_VALUE = Order::STATE_PENDING_PAYMENT;
 
@@ -40,7 +42,7 @@ class Data extends AbstractHelper {
 
     public function getDefaultLocale($storeId = null): string
     {
-        return $this->scopeConfig->getValue('general/locale/code',StoreScopeInterface::SCOPE_STORE, $storeId);
+        return $this->scopeConfig->getValue('general/locale/code', StoreScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -51,7 +53,8 @@ class Data extends AbstractHelper {
         if ($this->scopeConfig->isSetFlag(
             'amasty_checkout/general/enabled',
             StoreScopeInterface::SCOPE_STORE,
-            $storeId)) {
+            $storeId
+        )) {
             return true;
         }
         return false;
@@ -59,34 +62,43 @@ class Data extends AbstractHelper {
 
     public function getRedirectUrl(array $params = []): string
     {
-        return $this->_getUrl(self::REDIRECT_CONTROLLER_PATH,$params);
+        return $this->_getUrl(self::REDIRECT_CONTROLLER_PATH, $params);
     }
 
     public function getCallbackUrl(array $params = [], string $storeCode = ''): string
     {
         if ($storeCode) {
-            return sprintf("%s?___store=%s",
-                $this->_getUrl(self::CALLBACK_CONTROLLER_PATH,$params), $storeCode);
+            return sprintf(
+                "%s?___store=%s",
+                $this->_getUrl(self::CALLBACK_CONTROLLER_PATH, $params),
+                $storeCode
+            );
         }
-        return $this->_getUrl(self::CALLBACK_CONTROLLER_PATH,$params);
+        return $this->_getUrl(self::CALLBACK_CONTROLLER_PATH, $params);
     }
 
     public function getCancelUrl(array $params = [], string $storeCode = ''): string
     {
         if ($storeCode) {
-            return sprintf("%s?___store=%s",
-                $this->_getUrl(self::CANCEL_CONTROLLER_PATH,$params), $storeCode);
+            return sprintf(
+                "%s?___store=%s",
+                $this->_getUrl(self::CANCEL_CONTROLLER_PATH, $params),
+                $storeCode
+            );
         }
-        return $this->_getUrl(self::CANCEL_CONTROLLER_PATH,$params);
+        return $this->_getUrl(self::CANCEL_CONTROLLER_PATH, $params);
     }
 
     public function getContinueUrl(array $params = [], string $storeCode = ''): string
     {
         if ($storeCode) {
-            return sprintf("%s?___store=%s",
-                $this->_getUrl(self::RETURNS_CONTROLLER_PATH,$params), $storeCode);
+            return sprintf(
+                "%s?___store=%s",
+                $this->_getUrl(self::RETURNS_CONTROLLER_PATH, $params),
+                $storeCode
+            );
         }
-        return $this->_getUrl(self::RETURNS_CONTROLLER_PATH,$params);
+        return $this->_getUrl(self::RETURNS_CONTROLLER_PATH, $params);
     }
 
     /**
@@ -95,7 +107,7 @@ class Data extends AbstractHelper {
     public function getApiKey($storeId = null): string
     {
         return $this->scopeConfig->getValue(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::PUBLIC_KEY_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::PUBLIC_KEY_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -107,7 +119,7 @@ class Data extends AbstractHelper {
     public function getPrivateKey($storeId = null): string
     {
         return $this->scopeConfig->getValue(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::PRIVATE_KEY_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::PRIVATE_KEY_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -151,7 +163,7 @@ class Data extends AbstractHelper {
     public function isTestMode($storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::TESTMODE_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::TESTMODE_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -163,7 +175,7 @@ class Data extends AbstractHelper {
     public function isAutoCaptureMode($storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::AUTOCAPTURE_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::AUTOCAPTURE_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -191,7 +203,7 @@ class Data extends AbstractHelper {
     public function captureTransactionFee($storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::TRANSACTION_FEE_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::TRANSACTION_FEE_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -219,7 +231,7 @@ class Data extends AbstractHelper {
     public function getBrandingId($storeId = null): string
     {
         return $this->scopeConfig->getValue(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::BRANDING_ID_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::BRANDING_ID_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -231,7 +243,7 @@ class Data extends AbstractHelper {
     public function getGatewayCardLogo($storeId = null): string
     {
         return $this->scopeConfig->getValue(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,self::GENERAL_SETTINGS_CODE, self::CCARD_LOGO_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::CCARD_LOGO_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -244,10 +256,10 @@ class Data extends AbstractHelper {
      */
     public function getAllowedMethodsOfGateway(
         $storeId = null,
-        string $paymentMethod = self::GENERAL_SETTINGS_CODE): string
-    {
+        string $paymentMethod = self::GENERAL_SETTINGS_CODE
+    ): string {
         $methods = $this->scopeConfig->getValue(
-            sprintf(self::GENERAL_CONFIG_XML_PATH,$paymentMethod, self::ALLOWED_PAYMENT_METHODS_XML_CODE),
+            sprintf(self::GENERAL_CONFIG_XML_PATH, $paymentMethod, self::ALLOWED_PAYMENT_METHODS_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -266,5 +278,3 @@ class Data extends AbstractHelper {
         return $methods;
     }
 }
-
-

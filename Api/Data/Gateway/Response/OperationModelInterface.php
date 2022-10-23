@@ -4,7 +4,8 @@
  */
 namespace HW\QuickPay\Api\Data\Gateway\Response;
 
-interface OperationModelInterface {
+interface OperationModelInterface
+{
 
     public const OPERATION_TYPE_AUTHORIZE = 'authorize';
     public const OPERATION_TYPE_RECURRING = 'recurring';
@@ -43,7 +44,7 @@ interface OperationModelInterface {
     public function getAcquirer():string;
 
     /**
-     * Timestamp of creation	ISO-8601
+     * Timestamp of creation    ISO-8601
      * @return string
      */
     public function getCreatedAt(): string;

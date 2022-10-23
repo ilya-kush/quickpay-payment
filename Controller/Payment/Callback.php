@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Controller\Payment;
+
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\CsrfAwareActionInterface;
@@ -28,23 +29,23 @@ use HW\QuickPay\Helper\Data;
 
 class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
 {
-    protected RequestInterface $_request;
-    protected ResponseInterface $_response;
-    protected Data $_helper;
-    protected Logger $_logger;
+    protected RequestInterface $request;
+    protected ResponseInterface $response;
+    protected Data $helper;
+    protected Logger $logger;
     /**
      * @var Order|null
      */
-    protected $_order = null;
-    protected OrderFactory $_orderFactory;
-    protected ResultFactory $_resultFactory;
-    protected OrderRepository $_orderRepository;
-    protected OrderSender $_orderSender;
-    protected SaleOperation $_saleOperation;
-    protected InvoiceNotifierInterface $_notifierInvoice;
-    protected ResponseConverter $_responseConverter;
-    protected Operation $_paymentOperationHelper;
-    protected AuthorizeOperation $_authorizeOperation;
+    protected $order = null;
+    protected OrderFactory $orderFactory;
+    protected ResultFactory $resultFactory;
+    protected OrderRepository $orderRepository;
+    protected OrderSender $orderSender;
+    protected SaleOperation $saleOperation;
+    protected InvoiceNotifierInterface $notifierInvoice;
+    protected ResponseConverter $responseConverter;
+    protected Operation $paymentOperationHelper;
+    protected AuthorizeOperation $authorizeOperation;
 
     public function __construct(
         ResultFactory                     $resultFactory,
@@ -61,79 +62,82 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
         AuthorizeOperation                $authorizeOperation,
         SaleOperation                     $saleOperation
     ) {
-        $this->_logger          = $logger;
-        $this->_helper          = $helper;
-        $this->_response        = $response;
-        $this->_request         = $request;
-        $this->_orderFactory    = $orderFactory;
-        $this->_resultFactory   = $resultFactory;
-        $this->_orderRepository = $orderRepository;
-        $this->_orderSender     = $orderSender;
-        $this->_saleOperation   = $saleOperation;
-        $this->_notifierInvoice = $notifierInvoice;
-        $this->_responseConverter = $responseConverter;
-        $this->_paymentOperationHelper = $paymentOperationHelper;
-        $this->_authorizeOperation = $authorizeOperation;
+        $this->logger = $logger;
+        $this->helper = $helper;
+        $this->response = $response;
+        $this->request         = $request;
+        $this->orderFactory    = $orderFactory;
+        $this->resultFactory   = $resultFactory;
+        $this->orderRepository = $orderRepository;
+        $this->orderSender     = $orderSender;
+        $this->saleOperation   = $saleOperation;
+        $this->notifierInvoice = $notifierInvoice;
+        $this->responseConverter = $responseConverter;
+        $this->paymentOperationHelper = $paymentOperationHelper;
+        $this->authorizeOperation = $authorizeOperation;
     }
 
     /**
-	 * @return ResponseInterface|ResultInterface|void
-	 */
-	public function execute() {
+     * @return ResponseInterface|ResultInterface|void
+     */
+    public function execute()
+    {
 
-        $content = $this->_request->getContent();
+        $content = $this->request->getContent();
         /** here we use php function json_decode!!! */
-        $responsePaymentArray  = json_decode($content,true);
-        $this->_logger->debug(['callback' => 'Run callback controller']);
-        $this->_logger->debug($responsePaymentArray);
+        $responsePaymentArray  = json_decode($content, true);
+        $this->logger->debug(['callback' => 'Run callback controller']);
+        $this->logger->debug($responsePaymentArray);
 
-        if (!($this->_order && $this->_order->getId())) {
-            return $this->_resultFactory->create(ResultFactory::TYPE_RAW);
+        if (!($this->order && $this->order->getId())) {
+            return $this->resultFactory->create(ResultFactory::TYPE_RAW);
         }
 
-        $responsePayment = $this->_responseConverter->convertArrayToObject($responsePaymentArray);
+        $responsePayment = $this->responseConverter->convertArrayToObject($responsePaymentArray);
 
-        if ($this->_isAutoCaptureResponse($responsePayment)
-            && !$this->_existCaptureOperation($responsePayment) ) {
-            $this->_logger->debug([$responsePayment->getId() => 'autocapture callback without capture operation']);
-            return $this->_resultFactory->create(ResultFactory::TYPE_RAW);
+        if ($this->isAutoCaptureResponse($responsePayment)
+            && !$this->existCaptureOperation($responsePayment)) {
+            $this->logger->debug([$responsePayment->getId() => 'autocapture callback without capture operation']);
+            return $this->resultFactory->create(ResultFactory::TYPE_RAW);
         }
 
-        if ($this->_order->getId() ) {
+        if ($this->order->getId()) {
             /** @var Payment $payment */
-            $payment = $this->_order->getPayment();
-            $storeId = $this->_order->getStoreId();
+            $payment = $this->order->getPayment();
+            $storeId = $this->order->getStoreId();
 
-            if ($this->_order->isCanceled()) {
+            if ($this->order->isCanceled()) {
                 $payment->addTransactionCommentsToOrder(
                     $responsePayment->getId(),
                     __('Cannot process payment. Order is canceled.')
                 );
                 try {
                     $payment->void(new DataObject());
-                } catch (\Exception $exception ) {
-                    $this->_logger->debug(['Callback Exception' => $exception->getMessage()]);
+                } catch (\Exception $exception) {
+                    $this->logger->debug(['Callback Exception' => $exception->getMessage()]);
                 }
             }
-            if (in_array($this->_order->getState(),
+            if (in_array(
+                $this->order->getState(),
                 [
                     Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE,
                     Order::STATE_PAYMENT_REVIEW,
                     Order::STATE_NEW //<- to support payment created by old module
-                ])) {
+                ]
+            )) {
                 try {
-                    $totalDue = $this->_order->getTotalDue();
-                    $baseTotalDue = $this->_order->getBaseTotalDue();
+                    $totalDue = $this->order->getTotalDue();
+                    $baseTotalDue = $this->order->getBaseTotalDue();
 
-                    if ($this->_existCaptureOperation($responsePayment,true)) {
-                        if ($this->_order->canInvoice()) {
+                    if ($this->existCaptureOperation($responsePayment, true)) {
+                        if ($this->order->canInvoice()) {
                             $payment->setAmountAuthorized($totalDue);
                             $payment->setBaseAmountAuthorized($baseTotalDue);
-                            $this->_saleOperation->execute($payment);
-                            if ($this->_helper->ifSendInvoiceEmail($storeId)) {
+                            $this->saleOperation->execute($payment);
+                            if ($this->helper->ifSendInvoiceEmail($storeId)) {
                                 /** @var Order\Invoice $invoice */
                                 $invoice = $payment->getCreatedInvoice();
-                                $this->_notifierInvoice->notify($this->_order, $invoice);
+                                $this->notifierInvoice->notify($this->order, $invoice);
                             }
                         } else {
                             $payment->addTransactionCommentsToOrder(
@@ -142,11 +146,11 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
                             );
                         }
                     } else {
-                        $this->_authorizeOperation->authorize($payment,true,$baseTotalDue);
+                        $this->authorizeOperation->authorize($payment, true, $baseTotalDue);
                         // base amount will be set inside
                         $payment->setAmountAuthorized($totalDue);
 
-                        if ($this->_existCaptureOperation($responsePayment)) {
+                        if ($this->existCaptureOperation($responsePayment)) {
                             $payment->addTransactionCommentsToOrder(
                                 $responsePayment->getId(),
                                 __('There was an unsuccess autocapture operation.')
@@ -154,54 +158,53 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
                         }
                     }
 
-                    if (!$this->_order->getEmailSent()) {
-                        $this->_orderSender->send($this->_order);
+                    if (!$this->order->getEmailSent()) {
+                        $this->orderSender->send($this->order);
                         $payment->addTransactionCommentsToOrder(
                             $responsePayment->getId(),
                             __('The order confirmation email was sent')
                         );
                     }
-                } catch (\Exception $exception ) {
-                    $this->_logger->debug(['Callback Exception' => $exception->getMessage()]);
+                } catch (\Exception $exception) {
+                    $this->logger->debug(['Callback Exception' => $exception->getMessage()]);
                 }
-            }
-            else {
+            } else {
                 $payment->addTransactionCommentsToOrder(
                     $responsePayment->getId(),
                     __('Cannot process payment. Order has been already processed.')
                 );
             }
-            $this->_orderRepository->save($this->_order);
+            $this->orderRepository->save($this->order);
         }
-        return $this->_resultFactory->create(ResultFactory::TYPE_RAW);
-	}
+        return $this->resultFactory->create(ResultFactory::TYPE_RAW);
+    }
 
     public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
     {
-        $this->_logger->debug([sprintf("Rejected request %s :", $request->getActionName()) => $request->getParams()]);
+        $this->logger->debug([sprintf("Rejected request %s :", $request->getActionName()) => $request->getParams()]);
         return null;
     }
 
     public function validateForCsrf(RequestInterface $request): ?bool
     {
-        $content = $this->_request->getContent();
-        $this->_response->setBody('OK');
+        $content = $this->request->getContent();
+        $this->response->setBody('OK');
         /** here we use php function json_decode!!! */
-        $responsePaymentArray  = json_decode($content,true);
+        $responsePaymentArray  = json_decode($content, true);
 
         if (!isset($responsePaymentArray['order_id']) || !isset($responsePaymentArray['id'])) {
-            $this->_logger->debug(['Exception' => 'no id or order id']);
+            $this->logger->debug(['Exception' => 'no id or order id']);
             return false;
         }
 
         $orderIncrementId = $responsePaymentArray['order_id'];
         /** @var Order $order */
-        $this->_order = $this->_orderFactory->create()->loadByIncrementId($orderIncrementId);
+        $this->order = $this->orderFactory->create()->loadByIncrementId($orderIncrementId);
 
-        if ($this->_order && $this->_order->getId()) {
+        if ($this->order && $this->order->getId()) {
             $submittedChecksum  = $request->getServer('HTTP_QUICKPAY_CHECKSUM_SHA256');
             //Fetch private key from config and validate checksum
-            $key = $this->_helper->getPrivateKey($this->_order->getStoreId());
+            $key = $this->helper->getPrivateKey($this->order->getStoreId());
             $checksum = hash_hmac('sha256', $content, $key);
             if ($checksum == $submittedChecksum) {
                 return true;
@@ -213,7 +216,7 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
     /**
      * @param ResponseObject $responsePayment
      */
-    protected function _isAutoCaptureResponse($responsePayment): bool
+    protected function isAutoCaptureResponse($responsePayment): bool
     {
         return $responsePayment->getLink() && $responsePayment->getLink()->getAutoCapture();
     }
@@ -221,13 +224,13 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
     /**
      * @param ResponseObject $responsePayment
      */
-    protected function _existCaptureOperation($responsePayment, bool $onlyApploved = false): bool
+    protected function existCaptureOperation($responsePayment, bool $onlyApploved = false): bool
     {
         if (is_array($responsePayment->getOperations())) {
             foreach ($responsePayment->getOperations() as $operation) {
-                if ($this->_paymentOperationHelper->isOperationCapture($operation)) {
+                if ($this->paymentOperationHelper->isOperationCapture($operation)) {
                     if ($onlyApploved) {
-                        if ($this->_paymentOperationHelper->isStatusCodeApproved($operation)) {
+                        if ($this->paymentOperationHelper->isStatusCodeApproved($operation)) {
                             return true;
                         };
                     } else {
@@ -242,8 +245,8 @@ class Callback implements HttpPostActionInterface, CsrfAwareActionInterface
     /**
      * @deprecated since 3.1.0
      */
-    protected function _prepareComment(string $paymentId, string $message): string
+    protected function prepareComment(string $paymentId, string $message): string
     {
-        return sprintf(__("%s Transaction ID: \"%s\""),$message, $paymentId);
+        return sprintf(__("%s Transaction ID: \"%s\""), $message, $paymentId);
     }
 }

@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Helper;
+
 use HW\QuickPay\Api\Data\Gateway\Response\PaymentModelInterface;
 use Magento\Framework\DataObject;
 

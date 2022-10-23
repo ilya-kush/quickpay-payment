@@ -3,9 +3,11 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Gateway\Http\Client;
+
 use Magento\Payment\Gateway\Http\ClientException;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use QuickPay\API\Response;
+
 /**
  *
  */
@@ -24,7 +26,7 @@ class Initialization extends AbstractClient
         $parametersPayment = $parameters['payment'];
         $response   = [];
         try {
-            $client = $this->_getGatewayClient($storeId);
+            $client = $this->getGatewayClient($storeId);
             $clientResponsePayment = $client->request->post('/payments', $parametersPayment);
             $response = $clientResponsePayment->asArray();
             $message = sprintf("Http status - %s", $clientResponsePayment->httpStatus());
@@ -38,12 +40,11 @@ class Initialization extends AbstractClient
                 $response['link'] = $clientResponseLink->asArray();
                 $message = sprintf("Http status - %s", $clientResponseLink->httpStatus());
             }
-
         } catch (\Exception $e) {
             $message = __($e->getMessage() ?: 'Sorry, but something went wrong');
             throw new ClientException($message);
         } finally {
-            $this->_logger->debug(
+            $this->logger->debug(
                 [
                     'class'    => get_class($this),
                     'message' => $message,
@@ -55,8 +56,8 @@ class Initialization extends AbstractClient
         return $response;
     }
 
-	protected function _doRequest(array $parameters): Response
+    protected function doRequest(array $parameters): Response
     {
         /** placeholder */
-	}
+    }
 }

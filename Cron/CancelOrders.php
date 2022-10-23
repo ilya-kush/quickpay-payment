@@ -3,6 +3,7 @@
  * @author    Ilya Kushnir ilya.kush@gmail.com
  */
 namespace HW\QuickPay\Cron;
+
 use HW\QuickPay\Helper\Data;
 use HW\QuickPay\Model\Payment\Method\Specification\Group;
 use Magento\Framework\Stdlib\DateTime as FrameworkDateTime;
@@ -13,13 +14,13 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 
 class CancelOrders
 {
-    private CONST MIN_TIMEOUT_VALUE = 5;
+    private const MIN_TIMEOUT_VALUE = 5;
 
-    protected Data $_helper;
-    protected TimezoneInterface $_localeDate;
-    protected OrderRepository $_orderRepository;
-    protected CollectionFactory $_orderCollectionFactory;
-    protected Group $_groupSpecification;
+    protected Data $helper;
+    protected TimezoneInterface $localeDate;
+    protected OrderRepository $orderRepository;
+    protected CollectionFactory $orderCollectionFactory;
+    protected Group $groupSpecification;
 
     public function __construct(
         OrderRepository $orderRepository,
@@ -28,29 +29,31 @@ class CancelOrders
         TimezoneInterface $localeDate,
         Data $helper
     ) {
-        $this->_helper = $helper;
-        $this->_localeDate = $localeDate;
-        $this->_orderRepository = $orderRepository;
-        $this->_orderCollectionFactory = $orderCollectionFactory;
-        $this->_groupSpecification = $groupSpecification;
+        $this->helper           = $helper;
+        $this->localeDate       = $localeDate;
+        $this->orderRepository = $orderRepository;
+        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->groupSpecification = $groupSpecification;
     }
 
     public function execute(): bool
     {
-        $timeOutValue = $this->_helper->getCancelTimeout();
-        if (!$timeOutValue) { return true; }
-        $timeOutValue = ($timeOutValue < self::MIN_TIMEOUT_VALUE)?self::MIN_TIMEOUT_VALUE:$timeOutValue;
+        $timeOutValue = $this->helper->getCancelTimeout();
+        if (!$timeOutValue) {
+            return true;
+        }
+        $timeOutValue = ($timeOutValue < self::MIN_TIMEOUT_VALUE) ? self::MIN_TIMEOUT_VALUE : $timeOutValue;
 
         /** third param is important. We need GMT date.  */
-        $currentDate = $this->_localeDate->date(null,null,false);
+        $currentDate = $this->localeDate->date(null, null, false);
         $timeOutDate = $currentDate->sub(new \DateInterval(sprintf("PT%dM", $timeOutValue)));
         $timeOutPhpFormat = $timeOutDate->format(FrameworkDateTime::DATETIME_PHP_FORMAT);
 
-        $orders = $this->_orderCollectionFactory->create();
+        $orders = $this->orderCollectionFactory->create();
 
         $orders
             ->addAttributeToFilter('created_at', ['to' => $timeOutPhpFormat])
-            ->addFieldToFilter('state',['in' => [Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE]])
+            ->addFieldToFilter('state', ['in' => [Data::INITIALIZED_PAYMENT_ORDER_STATE_VALUE]])
         ;
 
         $orders->join(
@@ -59,15 +62,16 @@ class CancelOrders
             ['method']
         );
 
-        $orders->addFieldToFilter('method',['in' => $this->_groupSpecification->getGroupMethods()]);
+        $orders->addFieldToFilter('method', ['in' => $this->groupSpecification->getGroupMethods()]);
 
         /** @var Order $order */
         foreach ($orders as $order) {
             if ($order->canCancel()) {
                 try {
                     $order->registerCancellation(__('Canceled by payment timeout.'));
-                    $this->_orderRepository->save($order);
-                } catch (\Exception $e) {}
+                    $this->orderRepository->save($order);
+                } catch (\Exception $e) {
+                }
             }
         }
         return true;

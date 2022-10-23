@@ -40,7 +40,7 @@ class Data extends AbstractHelper
         return $this->_getModuleName();
     }
 
-    public function getDefaultLocale($storeId = null): string
+    public function getDefaultLocale($storeId = null): ?string
     {
         return $this->scopeConfig->getValue('general/locale/code', StoreScopeInterface::SCOPE_STORE, $storeId);
     }
@@ -104,7 +104,7 @@ class Data extends AbstractHelper
     /**
      * @param null|int|string $storeId
      */
-    public function getApiKey($storeId = null): string
+    public function getApiKey($storeId = null): ?string
     {
         return $this->scopeConfig->getValue(
             sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::PUBLIC_KEY_XML_CODE),
@@ -116,7 +116,7 @@ class Data extends AbstractHelper
     /**
      * @param null|int|string $storeId
      */
-    public function getPrivateKey($storeId = null): string
+    public function getPrivateKey($storeId = null): ?string
     {
         return $this->scopeConfig->getValue(
             sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::PRIVATE_KEY_XML_CODE),
@@ -212,7 +212,7 @@ class Data extends AbstractHelper
     /**
      * @param null|int|string $storeId
      */
-    public function getTextOnStatement($storeId = null): string
+    public function getTextOnStatement($storeId = null): ?string
     {
         return $this->scopeConfig->getValue(
             sprintf(
@@ -228,7 +228,7 @@ class Data extends AbstractHelper
     /**
      * @param null|int|string $storeId
      */
-    public function getBrandingId($storeId = null): string
+    public function getBrandingId($storeId = null): ?string
     {
         return $this->scopeConfig->getValue(
             sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::BRANDING_ID_XML_CODE),
@@ -240,7 +240,7 @@ class Data extends AbstractHelper
     /**
      * @param null|int|string $storeId
      */
-    public function getGatewayCardLogo($storeId = null): string
+    public function getGatewayCardLogo($storeId = null): ?string
     {
         return $this->scopeConfig->getValue(
             sprintf(self::GENERAL_CONFIG_XML_PATH, self::GENERAL_SETTINGS_CODE, self::CCARD_LOGO_XML_CODE),
@@ -257,7 +257,7 @@ class Data extends AbstractHelper
     public function getAllowedMethodsOfGateway(
         $storeId = null,
         string $paymentMethod = self::GENERAL_SETTINGS_CODE
-    ): string {
+    ): ?string {
         $methods = $this->scopeConfig->getValue(
             sprintf(self::GENERAL_CONFIG_XML_PATH, $paymentMethod, self::ALLOWED_PAYMENT_METHODS_XML_CODE),
             StoreScopeInterface::SCOPE_STORE,
